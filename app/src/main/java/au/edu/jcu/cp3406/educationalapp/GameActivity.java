@@ -1,6 +1,7 @@
 package au.edu.jcu.cp3406.educationalapp;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentManager;
 
 import android.content.Context;
 import android.hardware.Sensor;
@@ -13,7 +14,8 @@ import android.widget.Toast;
 import java.util.Objects;
 
 public class GameActivity extends AppCompatActivity {
-
+    private StatusFragment statusFragment;
+    private boolean isLargeScreen;
     private SensorManager sensorManager;
     private float accel;
     private float accelCurrent;
@@ -23,6 +25,8 @@ public class GameActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game);
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        statusFragment = (StatusFragment) fragmentManager.findFragmentById(R.id.statusFragment);
 
         //setting up sensor manager
         sensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
