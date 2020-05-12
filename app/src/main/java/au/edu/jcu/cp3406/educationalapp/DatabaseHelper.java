@@ -10,7 +10,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     private static final String TAG = "DatabaseHelper";
 
-    private static final String TABLE_NAME = "hi-scores_table";
+    private static final String TABLE_NAME = "highscores_table";
     private static final String COL1 = "ID";
     private static final String COL2 =  "Name";
     private static final String COL3 = "Score";
@@ -25,14 +25,14 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
         //creates table + columns for high scores database
         String createTable = "CREATE TABLE " + TABLE_NAME + " (ID INTEGER PRIMARY KEY AUTOINCREMENT, " + COL2 + " TEXT, " +
-            COL3 + " INTEGER, " + COL4 + " DECIMAL, " + COL5 + " VARCHAR)";
+            COL3 + " INTEGER, " + COL4 + " DECIMAL, " + COL5 + " TEXT)";
         db.execSQL(createTable);
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         //SQL code to drop table if it exists
-        db.execSQL("DROP IF TABLE EXISTS " + TABLE_NAME);
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME);
         onCreate(db);
     }
 

@@ -9,35 +9,52 @@ import android.widget.Button;
 
 public class MainActivity extends AppCompatActivity {
 
-    private Button playButton = findViewById(R.id.play);
-    private Button settingsButton = findViewById(R.id.settings);
-    private Button highScoresButton = findViewById(R.id.high_scores);
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
 
-        //**onClick Listeners for buttons on Main Activity class**/
+        Button playButton = findViewById(R.id.play);
+        Button settingsButton = findViewById(R.id.settings);
+        Button highScoresButton = findViewById(R.id.high_scores);
+
+        //** onClick Listeners for buttons on Main Activity class **//
         playButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(MainActivity.this, GameActivity.class));
+                openGameActivity();
             }
         });
 
         settingsButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(MainActivity.this, SettingsActivity.class));
+                openSettingsActivity();
             }
         });
 
         highScoresButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(MainActivity.this, HighScoresActivity.class));
+                openHighScoresActivity();
             }
         });
+    }
+
+    //** Methods for creating new intent to navigate to different activities **//
+    public void openGameActivity() {
+        Intent openGameIntent = new Intent(MainActivity.this, GameActivity.class);
+        startActivity(openGameIntent);
+    }
+
+    public void openSettingsActivity() {
+        Intent openSettingsIntent = new Intent(MainActivity.this, SettingsActivity.class);
+        startActivity(openSettingsIntent);
+    }
+
+    public void openHighScoresActivity() {
+        Intent openHighScoresIntent = new Intent(MainActivity.this, HighScoresActivity.class);
+        startActivity(openHighScoresIntent);
     }
 
 }
