@@ -1,4 +1,4 @@
-package au.edu.jcu.cp3406.educationalapp;
+package au.edu.jcu.cp3406.WordSort;
 
 import android.os.Bundle;
 
@@ -8,6 +8,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+
+import au.edu.jcu.cp3406.WordSort.R;
 
 
 /**

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="au.edu.jcu.cp3406.educationalapp">
+    package="au.edu.jcu.cp3406.WordSort">
 
     <application
         android:allowBackup="true"
@@ -9,10 +9,10 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".GameActivity"></activity>
-        <activity android:name=".HighScoresActivity" />
-        <activity android:name=".SettingsActivity" />
-        <activity android:name=".MainActivity">
+        <activity android:name="au.edu.jcu.cp3406.WordSort.GameActivity"></activity>
+        <activity android:name="au.edu.jcu.cp3406.WordSort.HighScoresActivity" />
+        <activity android:name="au.edu.jcu.cp3406.WordSort.SettingsActivity" />
+        <activity android:name="au.edu.jcu.cp3406.WordSort.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

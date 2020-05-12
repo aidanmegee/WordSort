@@ -1,4 +1,4 @@
-package au.edu.jcu.cp3406.educationalapp;
+package au.edu.jcu.cp3406.WordSort;
 
 import android.content.ContentValues;
 import android.content.Context;

@@ -1,6 +1,7 @@
-package au.edu.jcu.cp3406.educationalapp;
+package au.edu.jcu.cp3406.WordSort;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
 import android.content.Context;
@@ -12,6 +13,8 @@ import android.os.Bundle;
 import android.widget.Toast;
 
 import java.util.Objects;
+
+import au.edu.jcu.cp3406.WordSort.R;
 
 public class GameActivity extends AppCompatActivity {
     private StatusFragment statusFragment;
@@ -26,7 +29,9 @@ public class GameActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game);
         FragmentManager fragmentManager = getSupportFragmentManager();
-        statusFragment = (StatusFragment) fragmentManager.findFragmentById(R.id.statusFragment);
+        statusFragment = (StatusFragment) fragmentManager.findFragmentById(R.id.status);
+
+        isLargeScreen = statusFragment != null;
 
         //setting up sensor manager
         sensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
