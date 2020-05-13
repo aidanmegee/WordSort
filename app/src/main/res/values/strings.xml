@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">EducationalApp</string>
+    <string name="app_name">WordSort</string>
     <string name="play">Play</string>
     <string name="settings">Settings</string>
     <string name="high_scores">High-scores</string>

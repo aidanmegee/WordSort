@@ -18,6 +18,7 @@ import au.edu.jcu.cp3406.WordSort.R;
 
 public class GameActivity extends AppCompatActivity {
     private StatusFragment statusFragment;
+    private GameFragment gameFragment;
     private boolean isLargeScreen;
     private SensorManager sensorManager;
     private float accel;
@@ -28,8 +29,12 @@ public class GameActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game);
+
+        //** Find fragments using fragment manager **\\
         FragmentManager fragmentManager = getSupportFragmentManager();
         statusFragment = (StatusFragment) fragmentManager.findFragmentById(R.id.status);
+        gameFragment = (GameFragment) fragmentManager.findFragmentById(R.id.game);
+
 
         isLargeScreen = statusFragment != null;
 
@@ -64,6 +69,7 @@ public class GameActivity extends AppCompatActivity {
             accel = accel * 0.9f + delta;
             if (accel > 12) {
                 Toast.makeText(getApplicationContext(), "Shaking Detected, Restarting Game", Toast.LENGTH_LONG).show();
+
             }
         }
 
