@@ -11,6 +11,46 @@
         <item>Hard</item>
     </string-array>
 
+    <string-array name="easy_words">
+        <item>about</item>
+        <item>cake</item>
+        <item>baby</item>
+        <item>each</item>
+        <item>face</item>
+        <item>case</item>
+        <item>aunt</item>
+        <item>game</item>
+        <item>hair</item>
+        <item>keep</item>
+    </string-array>
+
+    <string-array name="medium_words">
+        <item>notice</item>
+        <item>needle</item>
+        <item>middle</item>
+        <item>mention</item>
+        <item>letter</item>
+        <item>exact</item>
+        <item>funny</item>
+        <item>empty</item>
+        <item>uncle</item>
+        <item>start</item>
+    </string-array>
+
+    <string-array name="hard_words">
+        <item>machine</item>
+        <item>receive</item>
+        <item>surprise</item>
+        <item>introduce</item>
+        <item>suitable</item>
+        <item>vegetable</item>
+        <item>yesterday</item>
+        <item>student</item>
+        <item>welcome</item>
+        <item>photograph</item>
+    </string-array>
+
+
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="time_passed">Time Passed:</string>
@@ -18,5 +58,4 @@
     <string name="guess_the_word">Guess The Word!</string>
     <string name="word">word</string>
     <string name="check">CHECK</string>
-    <string name="new_game">NEW GAME</string>
 </resources>

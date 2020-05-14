@@ -1,7 +1,6 @@
 package au.edu.jcu.cp3406.WordSort;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
 import android.content.Context;
@@ -14,7 +13,8 @@ import android.widget.Toast;
 
 import java.util.Objects;
 
-import au.edu.jcu.cp3406.WordSort.R;
+import au.edu.jcu.cp3406.WordSort.fragments.GameFragment;
+import au.edu.jcu.cp3406.WordSort.fragments.StatusFragment;
 
 public class GameActivity extends AppCompatActivity {
     private StatusFragment statusFragment;
@@ -34,7 +34,6 @@ public class GameActivity extends AppCompatActivity {
         FragmentManager fragmentManager = getSupportFragmentManager();
         statusFragment = (StatusFragment) fragmentManager.findFragmentById(R.id.status);
         gameFragment = (GameFragment) fragmentManager.findFragmentById(R.id.game);
-
 
         isLargeScreen = statusFragment != null;
 

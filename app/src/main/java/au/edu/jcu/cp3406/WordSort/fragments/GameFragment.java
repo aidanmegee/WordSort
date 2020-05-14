@@ -1,4 +1,4 @@
-package au.edu.jcu.cp3406.WordSort;
+package au.edu.jcu.cp3406.WordSort.fragments;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
@@ -16,6 +16,8 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Random;
+
+import au.edu.jcu.cp3406.WordSort.R;
 
 /**
  * A simple {@link Fragment} subclass.

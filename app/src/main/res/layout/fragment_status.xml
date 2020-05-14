@@ -4,7 +4,7 @@
     android:id="@+id/status"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="au.edu.jcu.cp3406.WordSort.StatusFragment"
+    tools:context="au.edu.jcu.cp3406.WordSort.fragments.StatusFragment"
     android:orientation="vertical">
 
     <!-- TODO: Update blank fragment layout -->

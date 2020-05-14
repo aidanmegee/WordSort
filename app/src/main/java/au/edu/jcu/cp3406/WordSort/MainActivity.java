@@ -7,8 +7,6 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
-import au.edu.jcu.cp3406.WordSort.R;
-
 public class MainActivity extends AppCompatActivity {
 
     @Override
