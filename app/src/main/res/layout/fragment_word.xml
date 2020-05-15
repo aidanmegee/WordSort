@@ -13,14 +13,17 @@
         android:layout_height="wrap_content"
         android:text="@string/time_passed"
         android:textSize="20sp"
-        android:layout_gravity="left"
-        tools:ignore="RtlHardcoded" />
+        tools:ignore="RtlHardcoded"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentBottom="true"/>
 
     <Chronometer
         android:id="@+id/timer"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textSize="20sp"
+        android:layout_alignEnd="@+id/time"
+        android:layout_alignParentBottom="true"
         android:layout_marginStart="150dp" />
 
 
