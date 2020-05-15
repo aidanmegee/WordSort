@@ -55,7 +55,7 @@ public class StatusFragment extends Fragment {
     }
 
     public void setMessage(String text) {
-
+        message.setText(text);
     }
 
     public void setTime(String timePassed) {

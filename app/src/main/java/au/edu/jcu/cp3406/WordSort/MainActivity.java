@@ -10,25 +10,34 @@ import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
+import java.util.Locale;
 import java.util.Objects;
 
 import au.edu.jcu.cp3406.WordSort.fragments.GameFragment;
 import au.edu.jcu.cp3406.WordSort.fragments.StatusFragment;
+import au.edu.jcu.cp3406.WordSort.fragments.WordFragment;
+import au.edu.jcu.cp3406.WordSort.utilities.Difficulty;
+import au.edu.jcu.cp3406.WordSort.utilities.Game;
+import au.edu.jcu.cp3406.WordSort.utilities.GameBuilder;
+import au.edu.jcu.cp3406.WordSort.utilities.State;
 
 public class MainActivity extends AppCompatActivity {
 
     private StatusFragment statusFragment;
     private GameFragment gameFragment;
+    private WordFragment wordFragment;
     private boolean isLargeScreen;
     private SensorManager sensorManager;
     private float accel;
     private float accelCurrent;
     private float accelLast;
 
+    GameBuilder gameBuilder;
     private Button checkWord, newGame;
 
     @Override
@@ -40,11 +49,7 @@ public class MainActivity extends AppCompatActivity {
         Button settingsButton = findViewById(R.id.settings);
         Button highScoresButton = findViewById(R.id.high_scores);
 
-        //** Find fragments using fragment manager **\\
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        statusFragment = (StatusFragment) fragmentManager.findFragmentById(R.id.status);
-        gameFragment = (GameFragment) fragmentManager.findFragmentById(R.id.game);
-
+        setUpFragmentManager();
         isLargeScreen = statusFragment != null;
 
         //setting up sensor manager
@@ -76,6 +81,37 @@ public class MainActivity extends AppCompatActivity {
                 openHighScoresActivity();
             }
         });
+    }
+
+    public void setUpFragmentManager() {
+
+        //** Find fragments using fragment manager **\\
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        statusFragment = (StatusFragment) fragmentManager.findFragmentById(R.id.status);
+        gameFragment = (GameFragment) fragmentManager.findFragmentById(R.id.game);
+        wordFragment = (WordFragment) fragmentManager.findFragmentById(R.id.wordFragment);
+    }
+
+    public void onUpdate(State state) {
+        Difficulty level = gameFragment.getLevel();
+        String text = String.format((Locale.getDefault()), "state: %s level: %s", state, level);
+        Log.i("MainActivity", text);
+
+        if (isLargeScreen) {
+            switch (state) {
+                case START_GAME:
+                    Game game = gameBuilder.create(level);
+                    wordFragment.setGame(game);
+                    break;
+                case CONTINUE_GAME:
+                    statusFragment.setScore(wordFragment.getScore());
+                    break;
+                case GAME_OVER:
+                    statusFragment.setScore(wordFragment.getScore());
+                    statusFragment.setMessage("Game Over");
+                    break;
+            }
+        }
     }
 
     //** Methods for creating new intent to navigate to different activities **//
@@ -115,6 +151,7 @@ public class MainActivity extends AppCompatActivity {
             //no records on change in accuracy
         }
     };
+
 
     /* Lifecycle methods to register and unregister sensor event listeners */
     @Override

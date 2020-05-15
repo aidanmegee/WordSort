@@ -42,6 +42,11 @@ public class GameFragment extends Fragment {
         // Required empty public constructor
     }
 
+    //getter method to be accessed in main activity
+    public Difficulty getLevel() {
+        return level;
+    }
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -84,6 +89,7 @@ public class GameFragment extends Fragment {
         return view;
     }
 
+    //attach listener to this fragment
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
