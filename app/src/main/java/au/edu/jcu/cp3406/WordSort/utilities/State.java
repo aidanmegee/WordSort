@@ -1,4 +1,5 @@
 package au.edu.jcu.cp3406.WordSort.utilities;
 
-public class State {
+public enum State {
+    START_GAME, CONTINUE_GAME, GAME_OVER
 }

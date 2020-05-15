@@ -1,27 +1,50 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<fragment xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/status"
+    android:name="com.example.guesstheceleb.StatusFragment"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="au.edu.jcu.cp3406.WordSort.MainActivity">
+    tools:context="."
+    tools:layout="@layout/fragment_game">
 
     <LinearLayout
-        android:orientation="vertical"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:layout_marginBottom="100dp"
-        android:gravity="bottom">
-    <Button
-        android:id="@+id/play"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/play" />
-    <Button
-        android:id="@+id/settings"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/settings" />
+        android:layout_marginBottom="50dp"
+        android:gravity="bottom"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/difficulty_level"
+            android:layout_width="353dp"
+            android:layout_height="101dp"
+            android:layout_margin="32dp"
+            android:text="@string/level"
+            android:textAlignment="center"
+            android:textSize="34sp" />
+
+        <Spinner
+            android:id="@+id/spinner"
+            android:layout_width="175dp"
+            android:layout_height="67dp"
+            android:layout_gravity="center"
+            android:layout_marginBottom="50dp"
+            android:entries="@array/difficulty"
+            android:gravity="center" />
+
+        <Button
+            android:id="@+id/play"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/play" />
+
+
+        <Button
+            android:id="@+id/settings"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/settings" />
 
         <Button
             android:id="@+id/high_scores"
@@ -31,4 +54,4 @@
 
     </LinearLayout>
 
-</RelativeLayout>
+</fragment>

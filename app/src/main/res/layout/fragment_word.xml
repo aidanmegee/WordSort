@@ -1,13 +1,27 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:id="@+id/wordFragment"
     tools:context="au.edu.jcu.cp3406.WordSort.fragments.WordFragment">
 
     <!-- TODO: Update blank fragment layout -->
     <TextView
+        android:id="@+id/time"
+        android:gravity="left"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:layout_height="wrap_content"
+        android:text="@string/time_passed"
+        android:textSize="20sp"
+        android:layout_gravity="left"
+        tools:ignore="RtlHardcoded" />
 
-</FrameLayout>
+    <Chronometer
+        android:id="@+id/timer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="20sp"
+        android:layout_marginStart="150dp" />
+
+
+</RelativeLayout>

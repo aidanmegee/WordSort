@@ -8,12 +8,12 @@
     android:orientation="vertical">
 
     <!-- TODO: Update blank fragment layout -->
+
     <TextView
-        android:id="@+id/time"
-        android:gravity="center"
+        android:id="@+id/score"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/time_passed"
+        android:text="@string/score"
         android:layout_gravity="center"
         android:layout_weight="1"/>
 
