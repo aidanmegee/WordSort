@@ -1,56 +1,48 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/game"
     tools:context="au.edu.jcu.cp3406.WordSort.fragments.GameFragment">
 
-    <!-- TODO: Update blank fragment layout -->
     <TextView
-        android:id="@+id/info"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:text="@string/guess_the_word" />
+        android:id="@+id/difficulty_level"
+        android:layout_width="353dp"
+        android:layout_height="101dp"
+        android:text="@string/level"
+        android:textAlignment="center"
+        android:textSize="34sp"
+        app:layout_constraintBottom_toTopOf="@+id/spinner"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.549"
+        android:layout_margin="32dp"/>
 
-    <TextView
-        android:id="@+id/current_word"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/info"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="20dp"
-        android:text=""
-        android:textSize="24sp"/>
-
-    <EditText
-        android:id="@+id/word_guess"
-        android:layout_marginTop="20dp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/current_word"
-        android:ems="10"
-        android:hint="@string/word"
-        android:inputType="text"
-        android:layout_centerHorizontal="true"
-        android:text=""
-        android:autofillHints="" />
+    <Spinner
+        android:id="@+id/spinner"
+        android:layout_width="175dp"
+        android:layout_height="67dp"
+        android:gravity="center"
+        android:entries="@array/difficulty"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <Button
-        android:id="@+id/check_word"
-        android:layout_marginTop="20dp"
+        android:id="@+id/button"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/word_guess"
-        android:layout_centerHorizontal="true"
-        android:text="@string/check"/>
+        android:textSize="25sp"
+        android:layout_marginTop="120dp"
+        android:text="@string/play"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/spinner"
+        app:layout_constraintVertical_bias="0.133" />
 
-    <Button
-        android:id="@+id/new_game"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/check_word"
-        android:layout_centerHorizontal="true"
-        android:text="@string/new_game"/>
-</RelativeLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

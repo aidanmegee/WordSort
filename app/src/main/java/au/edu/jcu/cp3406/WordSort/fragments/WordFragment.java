@@ -1,5 +1,6 @@
 package au.edu.jcu.cp3406.WordSort.fragments;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Bundle;
 
@@ -9,6 +10,9 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.TextView;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -24,6 +28,10 @@ import au.edu.jcu.cp3406.WordSort.utilities.Words;
  */
 public class WordFragment extends Fragment {
 
+    private TextView info, word;
+    private EditText wordGuess;
+    private Button checkWord, newGame;
+    private String currentWord;
     private StateListener listener;
     Game currentGame;
 
@@ -36,7 +44,33 @@ public class WordFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_word, container, false);
+        final View view = inflater.inflate(R.layout.fragment_word, container, false);
+
+        //Find TextViews
+        info = view.findViewById(R.id.info);
+        word = view.findViewById(R.id.current_word);
+
+        //Find EditText
+        wordGuess = view.findViewById(R.id.word_guess);
+
+        //Find Buttons
+        checkWord = view.findViewById(R.id.check_word);
+        newGame = view.findViewById(R.id.new_game);
+
+        //new game called when fragment is created
+
+        checkWord.setOnClickListener(new View.OnClickListener() {
+            @SuppressLint("SetTextI18n")
+            @Override
+            public void onClick(View v) {
+                if (wordGuess.getText().toString().equalsIgnoreCase(currentWord)) {
+                    info.setText("Correct Guess!");
+                    checkWord.setEnabled(false);
+                    newGame.setEnabled(true);
+                }
+            }
+        });
+        return view;
     }
 
 //    @Override

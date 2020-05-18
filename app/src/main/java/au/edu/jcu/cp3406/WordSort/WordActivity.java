@@ -4,6 +4,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
 
 import android.os.Bundle;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Chronometer;
 
 import au.edu.jcu.cp3406.WordSort.fragments.GameFragment;
@@ -28,7 +30,10 @@ public class WordActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_word);
 
-        setUpFragments();
+        //set up fragments
+        statusFragment = (StatusFragment) fragmentManager.findFragmentById(R.id.status);
+        wordFragment = (WordFragment) fragmentManager.findFragmentById(R.id.wordFragment);
+        gameFragment = (GameFragment) fragmentManager.findFragmentById(R.id.game);
 
         //Find array resource values of different word arrays
         easyWords = getResources().getStringArray(R.array.easy_words);
@@ -40,12 +45,6 @@ public class WordActivity extends AppCompatActivity {
 
     }
 
-    //Helper method for settings up fragments
-    public void setUpFragments() {
-        statusFragment = (StatusFragment) fragmentManager.findFragmentById(R.id.status);
-        wordFragment = (WordFragment) fragmentManager.findFragmentById(R.id.wordFragment);
-        gameFragment = (GameFragment) fragmentManager.findFragmentById(R.id.game);
-    }
 
     //onUpdate method to determine what state the current game is in
     public void onUpdate(State state) {
@@ -64,4 +63,5 @@ public class WordActivity extends AppCompatActivity {
                 break;
         }
     }
+
 }

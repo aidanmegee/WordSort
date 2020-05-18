@@ -9,44 +9,32 @@
         android:layout_height="fill_parent"
         android:layout_marginBottom="50dp"
         android:gravity="bottom"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        tools:ignore="UselessParent">
 
-        <TextView
-            android:id="@+id/difficulty_level"
-            android:layout_width="353dp"
-            android:layout_height="101dp"
-            android:layout_margin="32dp"
-            android:layout_gravity="center"
-            android:text="@string/level"
-            android:textAlignment="center"
-            android:textSize="25sp" />
+        <fragment
+            android:id="@+id/game"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:name="au.edu.jcu.cp3406.WordSort.fragments.GameFragment"
+            tools:layout="@layout/fragment_game">
 
-        <Spinner
-            android:id="@+id/spinner"
-            android:layout_width="175dp"
-            android:layout_height="67dp"
-            android:layout_gravity="center"
-            android:layout_marginBottom="50dp"
-            android:entries="@array/difficulty"
-            android:gravity="center" />
-
-        <Button
-            android:id="@+id/play"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/play" />
+        </fragment>
 
         <Button
             android:id="@+id/settings"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:text="@string/settings" />
+            android:text="@string/settings"
+            android:textSize="25sp"/>
 
         <Button
             android:id="@+id/high_scores"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:text="@string/high_scores" />
+            android:text="@string/high_scores"
+            android:textSize="25sp"/>
 
     </LinearLayout>
 

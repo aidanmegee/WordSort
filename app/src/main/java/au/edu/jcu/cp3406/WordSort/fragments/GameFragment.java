@@ -1,10 +1,8 @@
 package au.edu.jcu.cp3406.WordSort.fragments;
 
-import android.annotation.SuppressLint;
-import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 
-import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
 import android.util.Log;
@@ -12,14 +10,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.Spinner;
-import android.widget.TextView;
 
 
 import java.util.Random;
-
 import au.edu.jcu.cp3406.WordSort.R;
+import au.edu.jcu.cp3406.WordSort.WordActivity;
 import au.edu.jcu.cp3406.WordSort.utilities.Difficulty;
 import au.edu.jcu.cp3406.WordSort.utilities.State;
 import au.edu.jcu.cp3406.WordSort.utilities.StateListener;
@@ -28,21 +24,17 @@ import au.edu.jcu.cp3406.WordSort.utilities.StateListener;
  * A simple {@link Fragment} subclass.
  */
 public class GameFragment extends Fragment {
-    private TextView info, word;
-    private EditText wordGuess;
-    private Button checkWord, newGame;
-    private StateListener listener;
+
+    StateListener listener;
     private Difficulty level;
+    Button playButton;
 
     Random randomNum;
-
-    String currentWord;
 
     public GameFragment() {
         // Required empty public constructor
     }
 
-    //getter method to be accessed in main activity
     public Difficulty getLevel() {
         return level;
     }
@@ -55,38 +47,23 @@ public class GameFragment extends Fragment {
         final View view = inflater.inflate(R.layout.fragment_game, container, false);
         final Spinner spinner = view.findViewById(R.id.spinner);
 
-        //find Spinner item to determine difficulty
-        view.findViewById(R.id.play);
-        String selection = spinner.getSelectedItem().toString();
-        Log.i("GameFragment", "selection: " + selection);
-        level = Difficulty.valueOf(selection.toUpperCase());
-        listener.onUpdate(State.START_GAME);
-        //Find TextViews
-        info = view.findViewById(R.id.info);
-        word = view.findViewById(R.id.current_word);
-
-        //Find EditText
-        wordGuess = view.findViewById(R.id.word_guess);
-
-        //Find Buttons
-        checkWord = view.findViewById(R.id.check_word);
-        newGame = view.findViewById(R.id.new_game);
-
-        //new game called when fragment is created
-
-        checkWord.setOnClickListener(new View.OnClickListener() {
-            @SuppressLint("SetTextI18n")
+        playButton = view.findViewById(R.id.play);
+        playButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (wordGuess.getText().toString().equalsIgnoreCase(currentWord)) {
-                    info.setText("Correct Guess!");
-                    checkWord.setEnabled(false);
-                    newGame.setEnabled(true);
-                }
+                String selection = spinner.getSelectedItem().toString();
+                Log.i("GameFragment", "selection: " + selection);
+                level = Difficulty.valueOf(selection.toUpperCase());
+                openWordActivity();
+                listener.onUpdate(State.START_GAME);
             }
         });
-
         return view;
+    }
+
+    public void openWordActivity() {
+        Intent openWordIntent = new Intent(getContext(), WordActivity.class);
+        startActivity(openWordIntent);
     }
 
     //attach listener to this fragment
@@ -95,8 +72,6 @@ public class GameFragment extends Fragment {
 //        super.onAttach(context);
 //        listener = (StateListener) context;
 //    }
-
-
 
 
 }
