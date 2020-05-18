@@ -5,6 +5,8 @@ import androidx.fragment.app.FragmentManager;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Resources;
+import android.graphics.Color;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
@@ -12,9 +14,17 @@ import android.hardware.SensorManager;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
 
@@ -37,17 +47,57 @@ public class MainActivity extends AppCompatActivity {
     private float accelCurrent;
     private float accelLast;
 
+
     GameBuilder gameBuilder;
-    private Button checkWord, newGame;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        //Find Buttons
         Button playButton = findViewById(R.id.play);
         Button settingsButton = findViewById(R.id.settings);
         Button highScoresButton = findViewById(R.id.high_scores);
+
+        final TextView difficultyLevel = findViewById(R.id.difficulty_level);
+
+        String[] difficulties = getResources().getStringArray(R.array.difficulty);
+        final Spinner spinner = findViewById(R.id.spinner);
+        final List<String> difficultyList = new ArrayList<>(Arrays.asList(difficulties));
+
+        //initialising an ArrayAdapter
+        final ArrayAdapter<String> spinnerArrayAdapter = new ArrayAdapter<String>(this, R.layout.support_simple_spinner_dropdown_item, difficultyList) {
+            @Override
+            public View getDropDownView(int position, View convertView, ViewGroup parent) {
+                View view = super.getDropDownView(position, convertView, parent);
+                TextView tv = (TextView) view;
+                if (position%2 == 1) {
+                    tv.setBackgroundColor(Color.parseColor("#FFC9A3FF"));
+                } else {
+                    tv.setBackgroundColor(Color.parseColor("#FFAF89E5"));
+                }
+                return view;
+            }
+        };
+        spinnerArrayAdapter.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item);
+        spinner.setAdapter(spinnerArrayAdapter);
+
+        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            //methods for onItemSelectedListener
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                String selectedItemText = (String) parent.getItemAtPosition(position);
+                difficultyLevel.setText("Current Difficulty Level: " + selectedItemText);
+                Toast.makeText(getApplicationContext(), "Selected: " + selectedItemText, Toast.LENGTH_LONG).show();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
 
         setUpFragmentManager();
         isLargeScreen = statusFragment != null;
@@ -68,6 +118,13 @@ public class MainActivity extends AppCompatActivity {
         accelLast = SensorManager.GRAVITY_EARTH;
 
         //** onClick Listeners for buttons on Main Activity class **//
+        playButton.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                openWordActivity();
+            }
+        });
         settingsButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -124,6 +181,11 @@ public class MainActivity extends AppCompatActivity {
     public void openHighScoresActivity() {
         Intent openHighScoresIntent = new Intent(MainActivity.this, HighScoresActivity.class);
         startActivity(openHighScoresIntent);
+    }
+
+    public void openWordActivity() {
+        Intent openWordIntent = new Intent(MainActivity.this, WordActivity.class);
+        startActivity(openWordIntent);
     }
 
 

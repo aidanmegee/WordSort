@@ -55,7 +55,7 @@ public class GameFragment extends Fragment {
         final View view = inflater.inflate(R.layout.fragment_game, container, false);
         final Spinner spinner = view.findViewById(R.id.spinner);
 
-        //find views to start game + set difficulty
+        //find Spinner item to determine difficulty
         view.findViewById(R.id.play);
         String selection = spinner.getSelectedItem().toString();
         Log.i("GameFragment", "selection: " + selection);
@@ -90,11 +90,11 @@ public class GameFragment extends Fragment {
     }
 
     //attach listener to this fragment
-    @Override
-    public void onAttach(@NonNull Context context) {
-        super.onAttach(context);
-        listener = (StateListener) context;
-    }
+//    @Override
+//    public void onAttach(@NonNull Context context) {
+//        super.onAttach(context);
+//        listener = (StateListener) context;
+//    }
 
 
 

@@ -4,10 +4,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
 
 import android.os.Bundle;
-import android.os.SystemClock;
-import android.view.View;
 import android.widget.Chronometer;
 
+import au.edu.jcu.cp3406.WordSort.fragments.GameFragment;
 import au.edu.jcu.cp3406.WordSort.fragments.StatusFragment;
 import au.edu.jcu.cp3406.WordSort.fragments.WordFragment;
 import au.edu.jcu.cp3406.WordSort.utilities.State;
@@ -21,6 +20,7 @@ public class WordActivity extends AppCompatActivity {
     String[] hardWords;
     StatusFragment statusFragment;
     WordFragment wordFragment;
+    GameFragment gameFragment;
     FragmentManager fragmentManager;
 
     @Override
@@ -28,8 +28,7 @@ public class WordActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_word);
 
-        statusFragment = (StatusFragment) fragmentManager.findFragmentById(R.id.status);
-        wordFragment = (WordFragment) fragmentManager.findFragmentById(R.id.wordFragment);
+        setUpFragments();
 
         //Find array resource values of different word arrays
         easyWords = getResources().getStringArray(R.array.easy_words);
@@ -39,6 +38,13 @@ public class WordActivity extends AppCompatActivity {
         //find chronometer ID
         timer = findViewById(R.id.timer);
 
+    }
+
+    //Helper method for settings up fragments
+    public void setUpFragments() {
+        statusFragment = (StatusFragment) fragmentManager.findFragmentById(R.id.status);
+        wordFragment = (WordFragment) fragmentManager.findFragmentById(R.id.wordFragment);
+        gameFragment = (GameFragment) fragmentManager.findFragmentById(R.id.game);
     }
 
     //onUpdate method to determine what state the current game is in

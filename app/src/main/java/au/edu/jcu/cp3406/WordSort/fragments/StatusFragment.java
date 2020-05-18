@@ -45,11 +45,12 @@ public class StatusFragment extends Fragment {
         return view;
     }
 
-    @Override
-    public void onAttach(@NonNull Context context) {
-        super.onAttach(context);
-        listener = (StateListener) context;
-    }
+//    @Override
+//    public void onAttach(@NonNull Context context) {
+//        super.onAttach(context);
+//        listener = (StateListener) context;
+//    }
+
     public void setGuessesLeft(int guesses) {
         guessesLeft.setText(guesses);
     }

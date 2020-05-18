@@ -60,4 +60,5 @@
     <string name="play">Play</string>
     <string name="score">Score:</string>
     <string name="finished">Finished</string>
+    <string name="current_difficulty">Current Difficulty:</string>
 </resources>

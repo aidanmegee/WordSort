@@ -39,11 +39,11 @@ public class WordFragment extends Fragment {
         return inflater.inflate(R.layout.fragment_word, container, false);
     }
 
-    @Override
-    public void onAttach(@NonNull Context context) {
-        super.onAttach(context);
-        listener = (StateListener) context;
-    }
+//    @Override
+//    public void onAttach(@NonNull Context context) {
+//        super.onAttach(context);
+//        listener = (StateListener) context;
+//    }
 
     //** Public methods for word elements **//
     public void setGame(Game currentGame) {
