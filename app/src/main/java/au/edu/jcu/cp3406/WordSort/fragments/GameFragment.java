@@ -1,16 +1,22 @@
 package au.edu.jcu.cp3406.WordSort.fragments;
 
+import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.TextureView;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 
 import java.util.Random;
@@ -28,6 +34,7 @@ public class GameFragment extends Fragment {
     StateListener listener;
     private Difficulty level;
     Button playButton;
+    TextView difficulty;
 
     Random randomNum;
 
@@ -47,6 +54,20 @@ public class GameFragment extends Fragment {
         final View view = inflater.inflate(R.layout.fragment_game, container, false);
         final Spinner spinner = view.findViewById(R.id.spinner);
 
+        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @SuppressLint("SetTextI18n")
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                difficulty.setText("Current Difficulty: " + spinner.getSelectedItem().toString());
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
+        difficulty = view.findViewById(R.id.difficulty_level);
         playButton = view.findViewById(R.id.play);
         playButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -60,6 +81,8 @@ public class GameFragment extends Fragment {
         });
         return view;
     }
+
+
 
     public void openWordActivity() {
         Intent openWordIntent = new Intent(getContext(), WordActivity.class);
