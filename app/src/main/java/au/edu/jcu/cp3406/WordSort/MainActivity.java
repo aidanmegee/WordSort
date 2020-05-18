@@ -29,7 +29,7 @@ import au.edu.jcu.cp3406.WordSort.utilities.GameBuilder;
 import au.edu.jcu.cp3406.WordSort.utilities.State;
 import au.edu.jcu.cp3406.WordSort.utilities.StateListener;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements StateListener {
 
     private StatusFragment statusFragment;
     private GameFragment gameFragment;
@@ -155,7 +155,6 @@ public class MainActivity extends AppCompatActivity {
             //no records on change in accuracy
         }
     };
-
 
     /* Lifecycle methods to register and unregister sensor event listeners */
     @Override

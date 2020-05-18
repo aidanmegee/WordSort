@@ -28,10 +28,6 @@ import au.edu.jcu.cp3406.WordSort.utilities.Words;
  */
 public class WordFragment extends Fragment {
 
-    private TextView info, word;
-    private EditText wordGuess;
-    private Button checkWord, newGame;
-    private String currentWord;
     private StateListener listener;
     Game currentGame;
 
@@ -46,30 +42,6 @@ public class WordFragment extends Fragment {
         // Inflate the layout for this fragment
         final View view = inflater.inflate(R.layout.fragment_word, container, false);
 
-        //Find TextViews
-        info = view.findViewById(R.id.info);
-        word = view.findViewById(R.id.current_word);
-
-        //Find EditText
-        wordGuess = view.findViewById(R.id.word_guess);
-
-        //Find Buttons
-        checkWord = view.findViewById(R.id.check_word);
-        newGame = view.findViewById(R.id.new_game);
-
-        //new game called when fragment is created
-
-        checkWord.setOnClickListener(new View.OnClickListener() {
-            @SuppressLint("SetTextI18n")
-            @Override
-            public void onClick(View v) {
-                if (wordGuess.getText().toString().equalsIgnoreCase(currentWord)) {
-                    info.setText("Correct Guess!");
-                    checkWord.setEnabled(false);
-                    newGame.setEnabled(true);
-                }
-            }
-        });
         return view;
     }
 

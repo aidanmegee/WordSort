@@ -5,12 +5,10 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 
-import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.TextureView;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -31,7 +29,7 @@ import au.edu.jcu.cp3406.WordSort.utilities.StateListener;
  */
 public class GameFragment extends Fragment {
 
-    StateListener listener;
+    private StateListener listener;
     private Difficulty level;
     Button playButton;
     TextView difficulty;
@@ -67,6 +65,7 @@ public class GameFragment extends Fragment {
             }
         });
 
+        //Find ids through view
         difficulty = view.findViewById(R.id.difficulty_level);
         playButton = view.findViewById(R.id.play);
         playButton.setOnClickListener(new View.OnClickListener() {
@@ -83,18 +82,18 @@ public class GameFragment extends Fragment {
     }
 
 
-
-    public void openWordActivity() {
+    //helper method for opening the word Activity
+    private void openWordActivity() {
         Intent openWordIntent = new Intent(getContext(), WordActivity.class);
         startActivity(openWordIntent);
     }
 
     //attach listener to this fragment
-//    @Override
-//    public void onAttach(@NonNull Context context) {
-//        super.onAttach(context);
-//        listener = (StateListener) context;
-//    }
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        listener = (StateListener) getActivity();
+    }
 
 
 }
