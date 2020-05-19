@@ -5,24 +5,34 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <fragment
-        android:id="@+id/status"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_weight="1"
-        android:name="au.edu.jcu.cp3406.WordSort.fragments.StatusFragment"
-        tools:layout="@layout/fragment_status" >
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_marginBottom="50dp"
+        android:gravity="bottom"
+        android:orientation="vertical"
+        tools:ignore="UselessParent">
 
-    </fragment>
+        <fragment
+            android:id="@+id/status"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="2"
+            android:name="au.edu.jcu.cp3406.WordSort.fragments.StatusFragment"
+            tools:layout="@layout/fragment_status" >
 
-    <fragment
-        android:id="@+id/wordFragment"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_weight="1"
-        android:name="au.edu.jcu.cp3406.WordSort.fragments.WordFragment"
-        tools:layout="@layout/fragment_word">
+        </fragment>
 
-    </fragment>
+        <fragment
+            android:id="@+id/wordFragment"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:name="au.edu.jcu.cp3406.WordSort.fragments.WordFragment"
+            tools:layout="@layout/fragment_word">
+
+        </fragment>
+
+    </LinearLayout>
 
 </LinearLayout>

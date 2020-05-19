@@ -11,7 +11,9 @@
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:text="@string/guess_the_word" />
+        android:layout_gravity="center"
+        android:text="@string/guess_the_word"
+        android:textSize="24sp"/>
 
     <TextView
         android:id="@+id/current_word"
@@ -29,6 +31,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/current_word"
+        android:layout_gravity="center"
         android:ems="10"
         android:hint="@string/word"
         android:inputType="text"
@@ -37,11 +40,19 @@
         android:autofillHints="" />
 
     <Button
-        android:id="@+id/check_word"
+        android:id="@+id/show_word"
         android:layout_marginTop="20dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/word_guess"
+        android:layout_centerHorizontal="true"
+        android:text="@string/show_word"/>
+
+    <Button
+        android:id="@+id/check_word"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/show_word"
         android:layout_centerHorizontal="true"
         android:text="@string/check"/>
 

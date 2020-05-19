@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/status"
     android:layout_width="match_parent"
@@ -12,16 +12,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/score"
+        android:textSize="24sp"
+        android:layout_gravity="center"
         android:layout_marginTop="30dp"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"/>
 
-    <TextView
-        android:id="@+id/incorrect_guesses"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/incorrect_guesses_remaining"
-        android:layout_below="@+id/score"
-        android:layout_centerHorizontal="true" />
-
-</RelativeLayout>
+</androidx.appcompat.widget.LinearLayoutCompat>

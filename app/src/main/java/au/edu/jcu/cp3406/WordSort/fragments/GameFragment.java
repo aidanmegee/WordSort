@@ -32,8 +32,8 @@ public class GameFragment extends Fragment {
 
     private StateListener listener;
     private Difficulty level;
-    Button playButton;
-    TextView difficulty;
+    private Button playButton;
+    private TextView difficulty;
 
     Random randomNum;
 
@@ -84,7 +84,7 @@ public class GameFragment extends Fragment {
 
     //attach listener to this fragment
     @Override
-    public void onAttach(Context context) {
+    public void onAttach(@NonNull Context context) {
         super.onAttach(context);
         listener = (StateListener) context;
     }

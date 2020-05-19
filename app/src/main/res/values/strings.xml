@@ -61,4 +61,6 @@
     <string name="score">Score:</string>
     <string name="finished">Finished</string>
     <string name="current_difficulty">Current Difficulty:</string>
+    <string name="message">Message:</string>
+    <string name="show_word">Show Word</string>
 </resources>

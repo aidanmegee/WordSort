@@ -29,6 +29,7 @@ import au.edu.jcu.cp3406.WordSort.utilities.Words;
 public class WordFragment extends Fragment {
 
     private StateListener listener;
+    TextView message, word;
     Game currentGame;
 
     public WordFragment() {
@@ -37,16 +38,16 @@ public class WordFragment extends Fragment {
 
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         final View view = inflater.inflate(R.layout.fragment_word, container, false);
-
+        message = view.findViewById(R.id.info);
         return view;
     }
 
 //    @Override
-//    public void onAttach(@NonNull Context context) {
+//    public void onAttach(Context context) {
 //        super.onAttach(context);
 //        listener = (StateListener) context;
 //    }
@@ -55,6 +56,10 @@ public class WordFragment extends Fragment {
     public void setGame(Game currentGame) {
         this.currentGame = currentGame;
         displayUpdate();
+    }
+
+    public void setMessage(String text) {
+        message.setText(text);
     }
 
     public String getScore() {

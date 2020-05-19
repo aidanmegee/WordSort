@@ -85,17 +85,17 @@ public class WordActivity extends AppCompatActivity {
         switch (state) {
             case CONTINUE_GAME:
                 statusFragment.setScore(wordFragment.getScore());
-                statusFragment.setGuessesLeft(5);
                 timer.start();
                 break;
 
             case GAME_OVER:
                 statusFragment.setScore(wordFragment.getScore());
-                statusFragment.setMessage("Game Over");
-                statusFragment.setGuessesLeft(0);
+                wordFragment.setMessage("Game Over!");
                 timer.stop();
                 break;
         }
     }
+
+    public void newGame()
 
 }
