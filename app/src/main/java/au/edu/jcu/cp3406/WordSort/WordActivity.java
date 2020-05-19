@@ -14,6 +14,10 @@ import android.widget.Chronometer;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+
 import au.edu.jcu.cp3406.WordSort.fragments.GameFragment;
 import au.edu.jcu.cp3406.WordSort.fragments.StatusFragment;
 import au.edu.jcu.cp3406.WordSort.fragments.WordFragment;
@@ -51,7 +55,7 @@ public class WordActivity extends AppCompatActivity {
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         @SuppressLint("CommitPrefEdits") SharedPreferences.Editor editor = sharedPreferences.edit();
 
-        String difficultyLevel = sharedPreferences.getString(getString(R.id.difficulty_level), "");
+        final String difficultyLevel = sharedPreferences.getString(getString(R.id.difficulty_level), "");
 
         //Find array resource values of different word arrays
         easyWords = getResources().getStringArray(R.array.easy_words);
@@ -74,8 +78,9 @@ public class WordActivity extends AppCompatActivity {
         showWord.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                wordFragment.shuffleWord(currentWord);
-                wordFragment.setWord(currentWord);
+                //code to get random word from array (Easy, Medium or Hard
+                shuffleWord(currentWord);
+                word.setText(currentWord);
             }
         });
 
@@ -107,6 +112,17 @@ public class WordActivity extends AppCompatActivity {
 
     public void setCurrentWordArray(String currentWordArray) {
         this.currentWordArray = currentWordArray;
+    }
+
+    //Shuffling algorithm
+    public String shuffleWord(String currentWord) {
+        List<String> letters = Arrays.asList(currentWord.split("")); //creates a list of String characters and splits them with an empty string
+        Collections.shuffle(letters);
+        StringBuilder shuffled = new StringBuilder(); //String Builder Object to hold the new word after shuffle
+        for (String letter : letters) {
+            shuffled.append(letter); //add letter to the new String builder object
+        }
+        return shuffled.toString(); //converts String builder object back to string value
     }
 
 

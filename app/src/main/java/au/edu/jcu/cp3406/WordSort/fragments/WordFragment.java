@@ -22,9 +22,9 @@ import au.edu.jcu.cp3406.WordSort.R;
  */
 public class WordFragment extends Fragment {
 
-    TextView message, word, score;
+    TextView message, score;
     int currentScore;
-    Random ranNum;
+
 
     public WordFragment() {
         // Required empty public constructor
@@ -37,33 +37,17 @@ public class WordFragment extends Fragment {
         // Inflate the layout for this fragment
         final View view = inflater.inflate(R.layout.fragment_word, container, false);
 
-        ranNum = new Random();
 
         //find views in fragment
         message = view.findViewById(R.id.info);
         score = view.findViewById(R.id.score);
-        word = view.findViewById(R.id.current_word);
         return view;
-    }
-
-    public String shuffleWord(String currentWord) {
-        List<String> letters = Arrays.asList(currentWord.split(""));
-        Collections.shuffle(letters);
-        String shuffled = "";
-        for (String letter : letters) {
-            shuffled += letter;
-        }
-        return shuffled;
     }
 
 
     //** Public methods for word elements **//
     public void setMessage(String text) {
         message.setText(text);
-    }
-
-    public void setWord(String text) {
-        word.setText(text);
     }
 
     public int getScore() {
