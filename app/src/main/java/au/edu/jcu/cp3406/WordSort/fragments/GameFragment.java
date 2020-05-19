@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
 import android.util.Log;
@@ -46,7 +47,7 @@ public class GameFragment extends Fragment {
 
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         final View view = inflater.inflate(R.layout.fragment_game, container, false);
@@ -81,19 +82,18 @@ public class GameFragment extends Fragment {
         return view;
     }
 
+    //attach listener to this fragment
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        listener = (StateListener) context;
+    }
+
 
     //helper method for opening the word Activity
     private void openWordActivity() {
         Intent openWordIntent = new Intent(getContext(), WordActivity.class);
         startActivity(openWordIntent);
     }
-
-    //attach listener to this fragment
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        listener = (StateListener) getActivity();
-    }
-
 
 }
