@@ -40,14 +40,11 @@ public class MainActivity extends AppCompatActivity  {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-
         //Find Buttons
         Button settingsButton = findViewById(R.id.settings);
         Button highScoresButton = findViewById(R.id.high_scores);
 
         final TextView difficultyLevel = findViewById(R.id.difficulty_level);
-
-
 
         //** Find fragments using fragment manager **\\
         FragmentManager fragmentManager = getSupportFragmentManager();

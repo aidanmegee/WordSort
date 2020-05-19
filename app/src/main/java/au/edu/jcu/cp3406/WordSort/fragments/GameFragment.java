@@ -36,6 +36,7 @@ public class GameFragment extends Fragment {
     private TextView difficulty;
     private SharedPreferences sharedPreferences;
     private SharedPreferences.Editor editor;
+    String wordArray;
 
     Random randomNum;
 
@@ -47,10 +48,6 @@ public class GameFragment extends Fragment {
         return level;
     }
 
-    public void assignWordArray() {
-
-    }
-
 
     @SuppressLint("CommitPrefEdits")
     @Override
@@ -59,10 +56,6 @@ public class GameFragment extends Fragment {
         // Inflate the layout for this fragment
         final View view = inflater.inflate(R.layout.fragment_game, container, false);
         final Spinner spinner = view.findViewById(R.id.spinner);
-
-        //Set up Shared Preferences to pass difficulty level from this fragment into Word Activity
-        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
-        editor = sharedPreferences.edit();
 
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @SuppressLint("SetTextI18n")
@@ -85,19 +78,16 @@ public class GameFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 String selection = spinner.getSelectedItem().toString();
+                Intent openWordIntent = new Intent(getContext(), WordActivity.class);
                 Log.i("GameFragment", "selection: " + selection);
+                //Send intent with level selection to Word Activity
                 level = Difficulty.valueOf(selection.toUpperCase());
-                openWordActivity();
+                openWordIntent.putExtra("level", level);
+                startActivity(openWordIntent);
             }
         });
         return view;
     }
 
-
-    //helper method for opening the word Activity
-    private void openWordActivity() {
-        Intent openWordIntent = new Intent(getContext(), WordActivity.class);
-        startActivity(openWordIntent);
-    }
 
 }

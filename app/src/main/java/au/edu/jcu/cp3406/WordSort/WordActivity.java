@@ -17,10 +17,12 @@ import android.widget.TextView;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 
 import au.edu.jcu.cp3406.WordSort.fragments.GameFragment;
 import au.edu.jcu.cp3406.WordSort.fragments.StatusFragment;
 import au.edu.jcu.cp3406.WordSort.fragments.WordFragment;
+import au.edu.jcu.cp3406.WordSort.utilities.Difficulty;
 
 public class WordActivity extends AppCompatActivity {
 
@@ -29,7 +31,8 @@ public class WordActivity extends AppCompatActivity {
     String[] easyWords;
     String[] mediumWords;
     String[] hardWords;
-    String currentWordArray;
+    String currentDifficulty;
+    String[] currentWordArray;
     private TextView info, word;
     private EditText wordGuess;
     private Button checkWord, newGame, showWord;
@@ -39,7 +42,7 @@ public class WordActivity extends AppCompatActivity {
     GameFragment gameFragment;
 
 
-    @SuppressLint("ResourceType")
+    @SuppressLint({"ResourceType"})
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -51,17 +54,31 @@ public class WordActivity extends AppCompatActivity {
         wordFragment = (WordFragment) fragmentManager.findFragmentById(R.id.wordFragment);
         gameFragment = (GameFragment) fragmentManager.findFragmentById(R.id.game);
 
-        //Retrieve Shared preferences to get information from gameFragment in Main Activity
-        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-        @SuppressLint("CommitPrefEdits") SharedPreferences.Editor editor = sharedPreferences.edit();
-
-        final String difficultyLevel = sharedPreferences.getString(getString(R.id.difficulty_level), "");
+        //retrieve difficulty level selected from Main Activity
+        Intent intent = getIntent();
+        currentDifficulty = intent.getStringExtra("level");
 
         //Find array resource values of different word arrays
         easyWords = getResources().getStringArray(R.array.easy_words);
         mediumWords = getResources().getStringArray(R.array.medium_words);
         hardWords = getResources().getStringArray(R.array.hard_words);
 
+        //determines difficulty and assigns word array based on the difficulty
+        Difficulty[] difficulties = Difficulty.values();
+        for (Difficulty currentDifficulty : difficulties) {
+            //enum switch case for difficulties
+            switch (currentDifficulty) {
+                case EASY:
+                    setCurrentWordArray(easyWords);
+                    break;
+                case MEDIUM:
+                    setCurrentWordArray(mediumWords);
+                    break;
+                case HARD:
+                    setCurrentWordArray(hardWords);
+                    break;
+            }
+        }
 
         //Find TextViews
         info = findViewById(R.id.info);
@@ -79,6 +96,7 @@ public class WordActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 //code to get random word from array (Easy, Medium or Hard
+                getCurrentWordArray();
                 shuffleWord(currentWord);
                 word.setText(currentWord);
             }
@@ -92,6 +110,11 @@ public class WordActivity extends AppCompatActivity {
                     info.setText("Correct Guess!");
                     checkWord.setEnabled(false);
                     newGame.setEnabled(true);
+                    //iterate through current word array
+                    for (int i = 0; i < currentWordArray.length; i++) {
+                         word.setText(currentWord);
+
+                    }
                 }
             }
         });
@@ -110,8 +133,13 @@ public class WordActivity extends AppCompatActivity {
 
     }
 
-    public void setCurrentWordArray(String currentWordArray) {
+    //setter and getter methods for the current word array based on difficulty selected
+    public void setCurrentWordArray(String[] currentWordArray) {
         this.currentWordArray = currentWordArray;
+    }
+
+    public String[] getCurrentWordArray() {
+        return currentWordArray;
     }
 
     //Shuffling algorithm
