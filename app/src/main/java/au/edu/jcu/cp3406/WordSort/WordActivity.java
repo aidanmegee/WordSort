@@ -6,7 +6,6 @@ import androidx.fragment.app.FragmentManager;
 import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.Chronometer;
 import android.widget.EditText;
@@ -15,7 +14,6 @@ import android.widget.TextView;
 import au.edu.jcu.cp3406.WordSort.fragments.GameFragment;
 import au.edu.jcu.cp3406.WordSort.fragments.StatusFragment;
 import au.edu.jcu.cp3406.WordSort.fragments.WordFragment;
-import au.edu.jcu.cp3406.WordSort.utilities.State;
 
 public class WordActivity extends AppCompatActivity {
 
@@ -80,22 +78,8 @@ public class WordActivity extends AppCompatActivity {
     }
 
 
-    //onUpdate method to determine what state the current game is in
-    public void onUpdate(State state) {
-        switch (state) {
-            case CONTINUE_GAME:
-                statusFragment.setScore(wordFragment.getScore());
-                timer.start();
-                break;
+    public void newGame() {
 
-            case GAME_OVER:
-                statusFragment.setScore(wordFragment.getScore());
-                wordFragment.setMessage("Game Over!");
-                timer.stop();
-                break;
-        }
     }
-
-    public void newGame()
 
 }

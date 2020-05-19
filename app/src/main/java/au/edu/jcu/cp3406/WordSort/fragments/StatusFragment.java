@@ -1,6 +1,5 @@
 package au.edu.jcu.cp3406.WordSort.fragments;
 
-import android.content.Context;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -12,7 +11,6 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import au.edu.jcu.cp3406.WordSort.R;
-import au.edu.jcu.cp3406.WordSort.utilities.StateListener;
 
 
 /**
@@ -21,7 +19,6 @@ import au.edu.jcu.cp3406.WordSort.utilities.StateListener;
 public class StatusFragment extends Fragment {
 
     //private variables for status fragment
-    private StateListener listener;
     private TextView score;
 
     public StatusFragment() {

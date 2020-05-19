@@ -10,26 +10,19 @@ import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import java.util.Locale;
 import java.util.Objects;
 
 import au.edu.jcu.cp3406.WordSort.fragments.GameFragment;
 import au.edu.jcu.cp3406.WordSort.fragments.StatusFragment;
 import au.edu.jcu.cp3406.WordSort.fragments.WordFragment;
 import au.edu.jcu.cp3406.WordSort.utilities.Difficulty;
-import au.edu.jcu.cp3406.WordSort.utilities.Game;
-import au.edu.jcu.cp3406.WordSort.utilities.GameBuilder;
-import au.edu.jcu.cp3406.WordSort.utilities.State;
-import au.edu.jcu.cp3406.WordSort.utilities.StateListener;
 
-public class MainActivity extends AppCompatActivity implements StateListener {
+public class MainActivity extends AppCompatActivity  {
 
     private StatusFragment statusFragment;
     private GameFragment gameFragment;
@@ -40,7 +33,6 @@ public class MainActivity extends AppCompatActivity implements StateListener {
     private float accelCurrent;
     private float accelLast;
     private Difficulty level;
-    GameBuilder gameBuilder;
 
 
     @Override
@@ -96,29 +88,6 @@ public class MainActivity extends AppCompatActivity implements StateListener {
         });
     }
 
-    public void onUpdate(State state) {
-        Difficulty level = gameFragment.getLevel();
-        String text = String.format((Locale.getDefault()), "state: %s level: %s", state, level);
-        Log.i("MainActivity", text);
-
-        if (isLargeScreen) {
-            switch (state) {
-                case START_GAME:
-                    Game game = gameBuilder.create(level);
-                    wordFragment.setGame(game);
-                    wordFragment.setMessage("Game In Progress...");
-                    break;
-                case CONTINUE_GAME:
-                    statusFragment.setScore(wordFragment.getScore());
-                    wordFragment.setMessage("Game Continued...");
-                    break;
-                case GAME_OVER:
-                    statusFragment.setScore(wordFragment.getScore());
-                    wordFragment.setMessage("Game Over!");
-                    break;
-            }
-        }
-    }
 
     //** Methods for creating new intent to navigate to different activities **//
 

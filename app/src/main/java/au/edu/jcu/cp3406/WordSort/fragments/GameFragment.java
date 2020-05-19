@@ -19,18 +19,16 @@ import android.widget.TextView;
 
 
 import java.util.Random;
+
 import au.edu.jcu.cp3406.WordSort.R;
 import au.edu.jcu.cp3406.WordSort.WordActivity;
 import au.edu.jcu.cp3406.WordSort.utilities.Difficulty;
-import au.edu.jcu.cp3406.WordSort.utilities.State;
-import au.edu.jcu.cp3406.WordSort.utilities.StateListener;
 
 /**
  * A simple {@link Fragment} subclass.
  */
 public class GameFragment extends Fragment {
 
-    private StateListener listener;
     private Difficulty level;
     private Button playButton;
     private TextView difficulty;
@@ -76,17 +74,9 @@ public class GameFragment extends Fragment {
                 Log.i("GameFragment", "selection: " + selection);
                 level = Difficulty.valueOf(selection.toUpperCase());
                 openWordActivity();
-                listener.onUpdate(State.START_GAME);
             }
         });
         return view;
-    }
-
-    //attach listener to this fragment
-    @Override
-    public void onAttach(@NonNull Context context) {
-        super.onAttach(context);
-        listener = (StateListener) context;
     }
 
 
