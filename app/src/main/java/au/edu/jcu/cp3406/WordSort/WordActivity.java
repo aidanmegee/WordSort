@@ -99,6 +99,12 @@ public class WordActivity extends AppCompatActivity {
                 getCurrentWordArray();
                 shuffleWord(currentWord);
                 word.setText(currentWord);
+
+                for (int i = 0; i < currentWordArray.length; i++) {
+                    currentWord = currentWordArray[i];
+                    word.setText(currentWord);
+
+                }
             }
         });
 
@@ -111,10 +117,6 @@ public class WordActivity extends AppCompatActivity {
                     checkWord.setEnabled(false);
                     newGame.setEnabled(true);
                     //iterate through current word array
-                    for (int i = 0; i < currentWordArray.length; i++) {
-                         word.setText(currentWord);
-
-                    }
                 }
             }
         });
