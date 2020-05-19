@@ -37,11 +37,6 @@ public class StatusFragment extends Fragment {
         return view;
     }
 
-//    @Override
-//    public void onAttach(@NonNull Context context) {
-//        super.onAttach(context);
-//        listener = (StateListener) context;
-//    }
 
     public void setScore(String currentScore) {
         score.setText(currentScore);

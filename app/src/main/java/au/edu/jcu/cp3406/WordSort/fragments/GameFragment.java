@@ -3,11 +3,13 @@ package au.edu.jcu.cp3406.WordSort.fragments;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -32,6 +34,8 @@ public class GameFragment extends Fragment {
     private Difficulty level;
     private Button playButton;
     private TextView difficulty;
+    private SharedPreferences sharedPreferences;
+    private SharedPreferences.Editor editor;
 
     Random randomNum;
 
@@ -43,13 +47,22 @@ public class GameFragment extends Fragment {
         return level;
     }
 
+    public void assignWordArray() {
 
+    }
+
+
+    @SuppressLint("CommitPrefEdits")
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         final View view = inflater.inflate(R.layout.fragment_game, container, false);
         final Spinner spinner = view.findViewById(R.id.spinner);
+
+        //Set up Shared Preferences to pass difficulty level from this fragment into Word Activity
+        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
+        editor = sharedPreferences.edit();
 
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @SuppressLint("SetTextI18n")
@@ -67,6 +80,7 @@ public class GameFragment extends Fragment {
         //Find ids through view
         difficulty = view.findViewById(R.id.difficulty_level);
         playButton = view.findViewById(R.id.play);
+
         playButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
