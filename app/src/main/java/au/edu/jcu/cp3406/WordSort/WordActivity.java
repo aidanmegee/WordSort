@@ -28,7 +28,8 @@ public class WordActivity extends AppCompatActivity {
 
     private Chronometer timer;
     private Random randNum;
-    private int n, currentScore;
+    private int n, currentScore, easyScore, medScore, hardScore;
+    boolean check;
     String[] easyWords;
     String[] mediumWords;
     String[] hardWords;
@@ -71,12 +72,15 @@ public class WordActivity extends AppCompatActivity {
             switch (currentDifficulty) {
                 case EASY:
                     setCurrentWordArray(easyWords);
+                    setCurrentScore(easyScore);
                     break;
                 case MEDIUM:
                     setCurrentWordArray(mediumWords);
+                    setCurrentScore(medScore);
                     break;
                 case HARD:
                     setCurrentWordArray(hardWords);
+                    setCurrentScore(hardScore);
                     break;
             }
         }
@@ -132,10 +136,13 @@ public class WordActivity extends AppCompatActivity {
     @SuppressLint("SetTextI18n")
     public void checkWord(String currentWord, EditText wordGuess) {
         if (wordGuess.getText().toString().equalsIgnoreCase(currentWord)) {
-            Toast.makeText(getApplicationContext(), "Correct Guess!", Toast.LENGTH_LONG).show();
+            info.setText("Correct Guess!");
+            updateScore(true);
+            setCurrentScore(getCurrentScore());
+            score.setText(String.valueOf(currentScore + 15));
             wordGuess.setText("");
-            setNextWord(shuffleWord(currentWordArray[randNum.nextInt(getCurrentWordArray().length)]));
-
+            setNextWord((currentWordArray[randNum.nextInt(getCurrentWordArray().length)]));
+            word.setText(getNextWord());
             if (currentWord.equals(currentWordArray[9])) {
                 info.setText("All Words Have been solved");
                 showWord.setEnabled(false);
@@ -145,7 +152,7 @@ public class WordActivity extends AppCompatActivity {
             newGame.setEnabled(true);
             //iterate through current word array
         } else {
-            Toast.makeText(getApplicationContext(), "Incorrect Guess", Toast.LENGTH_LONG).show();
+            info.setText("Incorrect Guess, Try Again :)");
         }
     }
 
@@ -162,10 +169,23 @@ public class WordActivity extends AppCompatActivity {
         this.currentWord = currentWord;
     }
 
-    //fix or delete
-//    public String[] getNextWord() {
-//        return this.currentWordArray[n + 1];
-//    }
+    public String getNextWord() {
+        return this.currentWord;
+    }
+
+    public void setCurrentScore(int currentScore) {
+        this.currentScore = currentScore;
+    }
+
+    public int getCurrentScore() {
+        return this.currentScore;
+    }
+
+    public void updateScore(boolean check) {
+        if (check) {
+            setCurrentScore(currentScore += getCurrentScore());
+        }
+    }
 
     //Shuffling algorithm
     public String shuffleWord(String currentWord) {
@@ -179,11 +199,13 @@ public class WordActivity extends AppCompatActivity {
     }
 
 
+    @SuppressLint("SetTextI18n")
     public void newGame() {
         timer.setBase(SystemClock.elapsedRealtime());
         timer.start();
         //get random word from selected array
         currentWord = getCurrentWordArray()[randNum.nextInt(getCurrentWordArray().length)];
+        info.setText("Guess the Word!");
 
         //shows shuffled word
         word.setText(shuffleWord(currentWord));
