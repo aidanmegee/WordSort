@@ -34,11 +34,6 @@ public class GameFragment extends Fragment {
     private Difficulty level;
     private Button playButton;
     private TextView difficulty;
-    private SharedPreferences sharedPreferences;
-    private SharedPreferences.Editor editor;
-    String wordArray;
-
-    Random randomNum;
 
     public GameFragment() {
         // Required empty public constructor
@@ -82,7 +77,7 @@ public class GameFragment extends Fragment {
                 Log.i("GameFragment", "selection: " + selection);
                 //Send intent with level selection to Word Activity
                 level = Difficulty.valueOf(selection.toUpperCase());
-                openWordIntent.putExtra("level", level);
+                openWordIntent.putExtra("level", selection);
                 startActivity(openWordIntent);
             }
         });

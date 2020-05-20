@@ -113,22 +113,7 @@ public class WordActivity extends AppCompatActivity {
             @SuppressLint("SetTextI18n")
             @Override
             public void onClick(View v) {
-                if (wordGuess.getText().toString().equalsIgnoreCase(currentWord)) {
-                    Toast.makeText(getApplicationContext(), "Correct Guess!", Toast.LENGTH_LONG).show();
-                    wordGuess.setText("");
-                    setNextWord(shuffleWord(currentWordArray[randNum.nextInt(getCurrentWordArray().length)]));
-
-                    if (currentWord.equals(currentWordArray[9])) {
-                        info.setText("All Words Have been solved");
-                        showWord.setEnabled(false);
-                        checkWord.setEnabled(false);
-                    }
-                    word.setText(currentWord);
-                    newGame.setEnabled(true);
-                    //iterate through current word array
-                } else {
-                    Toast.makeText(getApplicationContext(), "Incorrect Guess", Toast.LENGTH_LONG).show();
-                }
+                checkWord(currentWord, wordGuess);
             }
         });
 
@@ -136,11 +121,32 @@ public class WordActivity extends AppCompatActivity {
         newGame.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                newGame();
                 timer.setBase(SystemClock.elapsedRealtime());
                 timer.stop();
             }
         });
 
+    }
+
+    @SuppressLint("SetTextI18n")
+    public void checkWord(String currentWord, EditText wordGuess) {
+        if (wordGuess.getText().toString().equalsIgnoreCase(currentWord)) {
+            Toast.makeText(getApplicationContext(), "Correct Guess!", Toast.LENGTH_LONG).show();
+            wordGuess.setText("");
+            setNextWord(shuffleWord(currentWordArray[randNum.nextInt(getCurrentWordArray().length)]));
+
+            if (currentWord.equals(currentWordArray[9])) {
+                info.setText("All Words Have been solved");
+                showWord.setEnabled(false);
+                checkWord.setEnabled(false);
+            }
+            word.setText(currentWord);
+            newGame.setEnabled(true);
+            //iterate through current word array
+        } else {
+            Toast.makeText(getApplicationContext(), "Incorrect Guess", Toast.LENGTH_LONG).show();
+        }
     }
 
     //setter and getter methods for the current word array based on difficulty selected

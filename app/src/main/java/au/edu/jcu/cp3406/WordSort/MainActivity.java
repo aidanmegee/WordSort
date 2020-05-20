@@ -46,6 +46,7 @@ public class MainActivity extends AppCompatActivity  {
 
         final TextView difficultyLevel = findViewById(R.id.difficulty_level);
 
+
         //** Find fragments using fragment manager **\\
         FragmentManager fragmentManager = getSupportFragmentManager();
         statusFragment = (StatusFragment) fragmentManager.findFragmentById(R.id.status);
