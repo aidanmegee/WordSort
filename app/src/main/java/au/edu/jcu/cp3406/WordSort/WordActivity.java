@@ -5,19 +5,19 @@ import androidx.fragment.app.FragmentManager;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
+import android.os.SystemClock;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Chronometer;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-import java.util.Objects;
+import java.util.Random;
 
 import au.edu.jcu.cp3406.WordSort.fragments.GameFragment;
 import au.edu.jcu.cp3406.WordSort.fragments.StatusFragment;
@@ -27,13 +27,14 @@ import au.edu.jcu.cp3406.WordSort.utilities.Difficulty;
 public class WordActivity extends AppCompatActivity {
 
     private Chronometer timer;
-    private boolean running;
+    private Random randNum;
+    private int n, currentScore;
     String[] easyWords;
     String[] mediumWords;
     String[] hardWords;
     String currentDifficulty;
     String[] currentWordArray;
-    private TextView info, word;
+    private TextView info, word, score;
     private EditText wordGuess;
     private Button checkWord, newGame, showWord;
     private String currentWord;
@@ -64,7 +65,7 @@ public class WordActivity extends AppCompatActivity {
         hardWords = getResources().getStringArray(R.array.hard_words);
 
         //determines difficulty and assigns word array based on the difficulty
-        Difficulty[] difficulties = Difficulty.values();
+        final Difficulty[] difficulties = Difficulty.values();
         for (Difficulty currentDifficulty : difficulties) {
             //enum switch case for difficulties
             switch (currentDifficulty) {
@@ -83,6 +84,7 @@ public class WordActivity extends AppCompatActivity {
         //Find TextViews
         info = findViewById(R.id.info);
         word = findViewById(R.id.current_word);
+        score = findViewById(R.id.score);
 
         //Find EditText
         wordGuess = findViewById(R.id.word_guess);
@@ -92,19 +94,18 @@ public class WordActivity extends AppCompatActivity {
         newGame = findViewById(R.id.new_game);
         showWord = findViewById(R.id.show_word);
 
+        //find chronometer ID
+        timer = findViewById(R.id.timer);
+
+        //random object for index of currentWordArray
+        randNum = new Random();
+
         showWord.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //code to get random word from array (Easy, Medium or Hard
-                getCurrentWordArray();
-                shuffleWord(currentWord);
-                word.setText(currentWord);
+                //when use clicks show word, timer starts and newGame is called
+                newGame();
 
-                for (int i = 0; i < currentWordArray.length; i++) {
-                    currentWord = currentWordArray[i];
-                    word.setText(currentWord);
-
-                }
             }
         });
 
@@ -113,10 +114,20 @@ public class WordActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if (wordGuess.getText().toString().equalsIgnoreCase(currentWord)) {
-                    info.setText("Correct Guess!");
-                    checkWord.setEnabled(false);
+                    Toast.makeText(getApplicationContext(), "Correct Guess!", Toast.LENGTH_LONG).show();
+                    wordGuess.setText("");
+                    setNextWord(shuffleWord(currentWordArray[randNum.nextInt(getCurrentWordArray().length)]));
+
+                    if (currentWord.equals(currentWordArray[9])) {
+                        info.setText("All Words Have been solved");
+                        showWord.setEnabled(false);
+                        checkWord.setEnabled(false);
+                    }
+                    word.setText(currentWord);
                     newGame.setEnabled(true);
                     //iterate through current word array
+                } else {
+                    Toast.makeText(getApplicationContext(), "Incorrect Guess", Toast.LENGTH_LONG).show();
                 }
             }
         });
@@ -125,13 +136,10 @@ public class WordActivity extends AppCompatActivity {
         newGame.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                newGame();
-//                timer.stop();
+                timer.setBase(SystemClock.elapsedRealtime());
+                timer.stop();
             }
         });
-
-        //find chronometer ID
-        timer = findViewById(R.id.timer);
 
     }
 
@@ -141,23 +149,45 @@ public class WordActivity extends AppCompatActivity {
     }
 
     public String[] getCurrentWordArray() {
-        return currentWordArray;
+        return this.currentWordArray;
     }
+
+    public void setNextWord(String currentWord) {
+        this.currentWord = currentWord;
+    }
+
+    //fix or delete
+//    public String[] getNextWord() {
+//        return this.currentWordArray[n + 1];
+//    }
 
     //Shuffling algorithm
     public String shuffleWord(String currentWord) {
         List<String> letters = Arrays.asList(currentWord.split("")); //creates a list of String characters and splits them with an empty string
         Collections.shuffle(letters);
-        StringBuilder shuffled = new StringBuilder(); //String Builder Object to hold the new word after shuffle
+        String shuffled = " ";//New String variable to hold letters
         for (String letter : letters) {
-            shuffled.append(letter); //add letter to the new String builder object
+            shuffled += letter;  //appends letters to the new String variable shuffled
         }
-        return shuffled.toString(); //converts String builder object back to string value
+        return shuffled; //returns the shuffled variable containing all letters of the word
     }
 
 
     public void newGame() {
-        openMainActivityIntent();
+        timer.setBase(SystemClock.elapsedRealtime());
+        timer.start();
+        //get random word from selected array
+        currentWord = getCurrentWordArray()[randNum.nextInt(getCurrentWordArray().length)];
+
+        //shows shuffled word
+        word.setText(shuffleWord(currentWord));
+
+        //clear edit text field
+        wordGuess.setText("");
+
+        //switch buttons from when show word is clicked to when new game is clicked
+        newGame.setEnabled(false);
+        checkWord.setEnabled(true);
     }
 
     public void openMainActivityIntent() {

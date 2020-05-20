@@ -54,7 +54,7 @@
     <string name="time_passed">Time Passed:</string>
     <string name="incorrect_guesses_remaining">Incorrect Guesses Remaining:</string>
     <string name="guess_the_word">Guess The Word!</string>
-    <string name="word">word</string>
+    <string name="word">Word</string>
     <string name="check">CHECK</string>
     <string name="new_game">New Game</string>
     <string name="play">Play</string>
