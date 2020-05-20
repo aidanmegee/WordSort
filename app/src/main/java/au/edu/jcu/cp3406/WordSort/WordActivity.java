@@ -5,6 +5,7 @@ import androidx.fragment.app.FragmentManager;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.SystemClock;
 import android.view.View;
@@ -38,7 +39,7 @@ public class WordActivity extends AppCompatActivity {
     private TextView info, word, score;
     private EditText wordGuess;
     private Button checkWord, newGame, showWord;
-    private String currentWord;
+    private String currentWord, nextWord;
     StatusFragment statusFragment;
     WordFragment wordFragment;
     GameFragment gameFragment;
@@ -55,6 +56,9 @@ public class WordActivity extends AppCompatActivity {
         statusFragment = (StatusFragment) fragmentManager.findFragmentById(R.id.status);
         wordFragment = (WordFragment) fragmentManager.findFragmentById(R.id.wordFragment);
         gameFragment = (GameFragment) fragmentManager.findFragmentById(R.id.game);
+
+        //Set up media player and sounds for audio
+        final MediaPlayer mediaPlayer = MediaPlayer.create(this, R.raw)
 
         //retrieve difficulty level selected from Main Activity
         Intent intent = getIntent();
@@ -133,29 +137,6 @@ public class WordActivity extends AppCompatActivity {
 
     }
 
-    @SuppressLint("SetTextI18n")
-    public void checkWord(String currentWord, EditText wordGuess) {
-        if (wordGuess.getText().toString().equalsIgnoreCase(currentWord)) {
-            info.setText("Correct Guess!");
-            updateScore(true);
-            setCurrentScore(getCurrentScore());
-            score.setText(String.valueOf(currentScore + 15));
-            wordGuess.setText("");
-            setNextWord((currentWordArray[randNum.nextInt(getCurrentWordArray().length)]));
-            word.setText(getNextWord());
-            if (currentWord.equals(currentWordArray[9])) {
-                info.setText("All Words Have been solved");
-                showWord.setEnabled(false);
-                checkWord.setEnabled(false);
-            }
-            word.setText(currentWord);
-            newGame.setEnabled(true);
-            //iterate through current word array
-        } else {
-            info.setText("Incorrect Guess, Try Again :)");
-        }
-    }
-
     //setter and getter methods for the current word array based on difficulty selected
     public void setCurrentWordArray(String[] currentWordArray) {
         this.currentWordArray = currentWordArray;
@@ -191,11 +172,44 @@ public class WordActivity extends AppCompatActivity {
     public String shuffleWord(String currentWord) {
         List<String> letters = Arrays.asList(currentWord.split("")); //creates a list of String characters and splits them with an empty string
         Collections.shuffle(letters);
-        String shuffled = " ";//New String variable to hold letters
+        StringBuilder shuffled = new StringBuilder(" ");//New String variable to hold letters
         for (String letter : letters) {
-            shuffled += letter;  //appends letters to the new String variable shuffled
+            shuffled.append(letter);  //appends letters to the new String variable shuffled
         }
-        return shuffled; //returns the shuffled variable containing all letters of the word
+        return shuffled.toString(); //returns the shuffled variable containing all letters of the word
+    }
+
+    @SuppressLint("SetTextI18n")
+    public void checkWord(String currentWord, EditText wordGuess) {
+        if (wordGuess.getText().toString().equalsIgnoreCase(currentWord)) {
+            info.setText("Correct Guess!");
+            wordGuess.setText("");
+            updateScore(true);
+            score.setText(String.valueOf(currentScore += getCurrentScore()));
+            showNextWord();
+
+            if (currentWord.equals(currentWordArray[9])) {
+                info.setText("All Words Have been solved");
+                timer.stop();
+                showWord.setEnabled(false);
+                checkWord.setEnabled(false);
+            }
+            word.setText(currentWord);
+            newGame.setEnabled(true);
+            //iterate through current word array
+        } else {
+            info.setText("Incorrect Guess, Try Again :)");
+        }
+    }
+
+    @SuppressLint("SetTextI18n")
+    public void showNextWord() {
+        timer.setBase(SystemClock.elapsedRealtime());
+        timer.start();
+
+        nextWord = getCurrentWordArray()[randNum.nextInt(getCurrentWordArray().length - 1)];
+        word.setText(shuffleWord(nextWord));
+        info.setText("The New Word to Guess Is:");
     }
 
 
@@ -219,6 +233,7 @@ public class WordActivity extends AppCompatActivity {
     }
 
     public void openMainActivityIntent() {
+        newGame();
         Intent mainActivityIntent = new Intent(WordActivity.this, MainActivity.class);
         startActivity(mainActivityIntent);
     }

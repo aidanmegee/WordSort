@@ -114,8 +114,10 @@ public class MainActivity extends AppCompatActivity  {
             float delta = accelCurrent - accelLast;
             accel = accel * 0.9f + delta;
             if (accel > 12) {
+                // new game method called for device movement (shaking)
                 Toast.makeText(getApplicationContext(), "Shaking Detected, Restarting Game", Toast.LENGTH_LONG).show();
-
+                WordActivity wordActivity = new WordActivity();
+                wordActivity.newGame();
             }
         }
 
