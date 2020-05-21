@@ -39,7 +39,10 @@ public class WordActivity extends AppCompatActivity {
 
     private Chronometer timer;
     private Random randNum;
-    private int n, currentScore, easyScore, medScore, hardScore;
+    private int n, currentScore;
+    private int easyScore = 5;
+    private int medScore = 10;
+    private int hardScore = 15;
     boolean check;
     String[] easyWords;
     String[] mediumWords;
@@ -118,24 +121,7 @@ public class WordActivity extends AppCompatActivity {
         hardWords = getResources().getStringArray(R.array.hard_words);
 
         //determines difficulty and assigns word array based on the difficulty
-        final Difficulty[] difficulties = Difficulty.values();
-        for (Difficulty currentDifficulty : difficulties) {
-            //enum switch case for difficulties
-            switch (currentDifficulty) {
-                case EASY:
-                    setCurrentWordArray(easyWords);
-                    setCurrentScore(easyScore);
-                    break;
-                case MEDIUM:
-                    setCurrentWordArray(mediumWords);
-                    setCurrentScore(medScore);
-                    break;
-                case HARD:
-                    setCurrentWordArray(hardWords);
-                    setCurrentScore(hardScore);
-                    break;
-            }
-        }
+        chooseDifficulty(Difficulty.valueOf(currentDifficulty.toUpperCase()));
 
         //Find TextViews
         info = findViewById(R.id.info);
@@ -154,7 +140,7 @@ public class WordActivity extends AppCompatActivity {
         timer = findViewById(R.id.timer);
 
         //random object for index of currentWordArray
-        randNum = new Random();
+        final int randNum = new Random().nextInt(currentWordArray.length);
 
         showWord.setOnClickListener(new View.OnClickListener() {
             @SuppressLint("SetTextI18n")
@@ -163,11 +149,10 @@ public class WordActivity extends AppCompatActivity {
                 timer.setBase(SystemClock.elapsedRealtime());
                 timer.start();
                 //get random word from selected array
-                currentWord = getCurrentWordArray()[randNum.nextInt(getCurrentWordArray().length)];
+                currentWord = getCurrentWordArray()[randNum];
+                word.setText(shuffleWord(getNextWord()));
                 info.setText("Guess the Word!");
 
-                //shows shuffled word
-                word.setText(shuffleWord(currentWord));
 
                 //clear edit text field
                 wordGuess.setText("");
@@ -183,7 +168,8 @@ public class WordActivity extends AppCompatActivity {
             @SuppressLint("SetTextI18n")
             @Override
             public void onClick(View v) {
-                checkWord(currentWord, wordGuess);
+                checkWord(currentWord);
+                word.setText(shuffleWord(getNextWord()));
             }
         });
 
@@ -240,6 +226,23 @@ public class WordActivity extends AppCompatActivity {
         super.onPause();
     }
 
+    public void chooseDifficulty(Difficulty difficulty) {
+        switch (difficulty) {
+            case EASY:
+                setCurrentWordArray(easyWords);
+                setCurrentScore(easyScore);
+                break;
+            case MEDIUM:
+                setCurrentWordArray(mediumWords);
+                setCurrentScore(medScore);
+                break;
+            case HARD:
+                setCurrentWordArray(hardWords);
+                setCurrentScore(hardScore);
+                break;
+        }
+    }
+
     //setter and getter methods for the current word array based on difficulty selected
     public void setCurrentWordArray(String[] currentWordArray) {
         this.currentWordArray = currentWordArray;
@@ -283,7 +286,7 @@ public class WordActivity extends AppCompatActivity {
     }
 
     @SuppressLint("SetTextI18n")
-    public void checkWord(String currentWord, EditText wordGuess) {
+    public void checkWord(String currentWord) {
         if (wordGuess.getText().toString().equalsIgnoreCase(currentWord)) {
             soundPool.play(correctSound, 1, 1, 0, 0, 1);
             info.setText("Correct Guess!");
@@ -291,7 +294,6 @@ public class WordActivity extends AppCompatActivity {
             if (currentWordArray.length != 0) {
                 showNextWord();
             }
-
 
             wordGuess.setText("");
             updateScore(true);
@@ -304,7 +306,6 @@ public class WordActivity extends AppCompatActivity {
                 showWord.setEnabled(false);
                 checkWord.setEnabled(false);
             }
-            word.setText(currentWord);
             newGame.setEnabled(true);
             //iterate through current word array
         } else {
@@ -316,11 +317,9 @@ public class WordActivity extends AppCompatActivity {
     @SuppressLint("SetTextI18n")
     public void showNextWord() {
 
-        n += 1;
-        getCurrentWordArray();
-        currentWord = getCurrentWordArray()[n];
-        info.setText("The New Word to Guess Is:");
-        word.setText(shuffleWord(currentWord));
+        for (int i = 0; i < getCurrentWordArray().length; i++) {
+            setNextWord(currentWordArray[i]);
+        }
     }
 
 
@@ -329,11 +328,8 @@ public class WordActivity extends AppCompatActivity {
         timer.setBase(SystemClock.elapsedRealtime());
         timer.start();
         //get random word from selected array
-        currentWord = getCurrentWordArray()[randNum.nextInt(getCurrentWordArray().length)];
+//        currentWord = getCurrentWordArray()[randNum.nextInt(getCurrentWordArray().length)];
         info.setText("Guess the Word!");
-
-        //shows shuffled word
-        word.setText(shuffleWord(currentWord));
 
         //clear edit text field
         wordGuess.setText("");

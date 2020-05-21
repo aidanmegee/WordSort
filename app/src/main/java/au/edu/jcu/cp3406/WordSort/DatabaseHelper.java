@@ -14,8 +14,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String COL1 = "ID";
     private static final String COL2 =  "Name";
     private static final String COL3 = "Score";
-    private static final String COL4 = "Time";
-    private static final String COL5 = "Difficulty";
+
 
     public DatabaseHelper(Context context) {
         super(context, TABLE_NAME, null, 1);
@@ -25,7 +24,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
         //creates table + columns for high scores database
         String createTable = "CREATE TABLE " + TABLE_NAME + " (ID INTEGER PRIMARY KEY AUTOINCREMENT, " + COL2 + " TEXT, " +
-            COL3 + " INTEGER, " + COL4 + " DECIMAL, " + COL5 + " TEXT)";
+            COL3 + " INTEGER)";
         db.execSQL(createTable);
     }
 
@@ -42,13 +41,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         ContentValues contentValues = new ContentValues();
         contentValues.put(COL2, name);
         contentValues.put(COL3, score);
-        contentValues.put(COL4, time);
-        contentValues.put(COL5, difficulty);
 
         Log.d(TAG, "addData: Adding " + name + " to " + TABLE_NAME);
         Log.d(TAG, "addData: Adding " + score + " to " + TABLE_NAME);
-        Log.d(TAG, "addData: Adding " + time + " to " + TABLE_NAME);
-        Log.d(TAG, "addData: Adding " + difficulty + " to " + TABLE_NAME);
 
         long result = db.insert(TABLE_NAME, null, contentValues);
 
@@ -59,4 +54,5 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             return true;
         }
     }
+
 }
