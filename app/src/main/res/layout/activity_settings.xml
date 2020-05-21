@@ -6,6 +6,36 @@
     android:layout_height="match_parent"
     tools:context="au.edu.jcu.cp3406.WordSort.SettingsActivity">
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/settings"
+        android:textStyle="bold"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="50dp"
+        android:textSize="20sp"/>
+
+    <Switch
+        android:id="@+id/sound_switch"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="200dp"
+        android:text="@string/mute_sounds"
+        android:textSize="20sp"/>
+
+    <Switch
+        android:id="@+id/sensor_switch"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/sound_switch"
+        android:layout_marginTop="20dp"
+        android:text="@string/unregister_sensors"
+        android:textSize="20sp"/>
+
+
+
     <Button
         android:id="@+id/finished"
         android:layout_width="match_parent"

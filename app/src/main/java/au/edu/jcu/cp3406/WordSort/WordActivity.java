@@ -4,8 +4,17 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.Intent;
+import android.hardware.Sensor;
+import android.hardware.SensorEvent;
+import android.hardware.SensorEventListener;
+import android.hardware.SensorManager;
+import android.media.AudioAttributes;
+import android.media.AudioManager;
 import android.media.MediaPlayer;
+import android.media.SoundPool;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.SystemClock;
 import android.view.View;
@@ -18,6 +27,7 @@ import android.widget.Toast;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 import java.util.Random;
 
 import au.edu.jcu.cp3406.WordSort.fragments.GameFragment;
@@ -40,9 +50,15 @@ public class WordActivity extends AppCompatActivity {
     private EditText wordGuess;
     private Button checkWord, newGame, showWord;
     private String currentWord, nextWord;
+    private SoundPool soundPool;
+    private int correctSound, incorrectSound;
     StatusFragment statusFragment;
     WordFragment wordFragment;
     GameFragment gameFragment;
+    private SensorManager sensorManager;
+    private float accel;
+    private float accelCurrent;
+    private float accelLast;
 
 
     @SuppressLint({"ResourceType"})
@@ -51,14 +67,46 @@ public class WordActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_word);
 
+        //setting up sensor manager
+        sensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
+        if (sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER) != null) {
+            //there exists an Accelerometer
+            Toast.makeText(getApplicationContext(), "Accelerometer Detected", Toast.LENGTH_LONG).show();
+        } else {
+            //No Accelerometer
+            Toast.makeText(getApplicationContext(), "No Accelerometer Detected :(", Toast.LENGTH_LONG).show();
+        }
+        Objects.requireNonNull(sensorManager).registerListener(sensorEventListener, sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER),
+                SensorManager.SENSOR_DELAY_NORMAL);
+        accel = 10f;
+        accelCurrent = SensorManager.GRAVITY_EARTH;
+        accelLast = SensorManager.GRAVITY_EARTH;
+
         //Set up fragments
         FragmentManager fragmentManager = getSupportFragmentManager();
         statusFragment = (StatusFragment) fragmentManager.findFragmentById(R.id.status);
         wordFragment = (WordFragment) fragmentManager.findFragmentById(R.id.wordFragment);
         gameFragment = (GameFragment) fragmentManager.findFragmentById(R.id.game);
 
-        //Set up media player and sounds for audio
-        final MediaPlayer mediaPlayer = MediaPlayer.create(this, R.raw)
+        //Set up soundPool and sounds for audio
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            AudioAttributes audioAttributes = new AudioAttributes.Builder()
+                    .setUsage(AudioAttributes.USAGE_ASSISTANCE_SONIFICATION)
+                    .setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION)
+                    .build();
+            //new sound pool constructor to set max streams and audio attributes above
+            soundPool = new SoundPool.Builder()
+                    .setMaxStreams(2)
+                    .setAudioAttributes(audioAttributes)
+                    .build();
+
+        } else {
+            //use old constructor for builds before version LOLLIPOP
+            soundPool = new SoundPool(2, AudioManager.STREAM_MUSIC, 0);
+        }
+
+        correctSound = soundPool.load(this, R.raw.correct, 1);
+        incorrectSound = soundPool.load(this, R.raw.incorrect, 1);
 
         //retrieve difficulty level selected from Main Activity
         Intent intent = getIntent();
@@ -109,10 +157,24 @@ public class WordActivity extends AppCompatActivity {
         randNum = new Random();
 
         showWord.setOnClickListener(new View.OnClickListener() {
+            @SuppressLint("SetTextI18n")
             @Override
             public void onClick(View v) {
-                //when use clicks show word, timer starts and newGame is called
-                newGame();
+                timer.setBase(SystemClock.elapsedRealtime());
+                timer.start();
+                //get random word from selected array
+                currentWord = getCurrentWordArray()[randNum.nextInt(getCurrentWordArray().length)];
+                info.setText("Guess the Word!");
+
+                //shows shuffled word
+                word.setText(shuffleWord(currentWord));
+
+                //clear edit text field
+                wordGuess.setText("");
+
+                //switch buttons from when show word is clicked to when new game is clicked
+                newGame.setEnabled(false);
+                checkWord.setEnabled(true);
 
             }
         });
@@ -130,11 +192,52 @@ public class WordActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 newGame();
-                timer.setBase(SystemClock.elapsedRealtime());
-                timer.stop();
+
             }
         });
 
+    }
+
+    //New sensor event listener to listen for shake events
+    private final SensorEventListener sensorEventListener = new SensorEventListener() {
+
+        //detects sensor change events based on x, y, z coordinates using Math library
+        @Override
+        public void onSensorChanged(SensorEvent event) {
+            float x = event.values[0];
+            float y = event.values[1];
+            float z = event.values[2];
+            accelLast = accelCurrent;
+            accelCurrent = (float) Math.sqrt(x * x + y * y + z * z);
+            float delta = accelCurrent - accelLast;
+            accel = accel * 0.9f + delta;
+            if (accel > 12) {
+                // new game method called for device movement (shaking)
+                Toast.makeText(getApplicationContext(), "Shaking Detected, Restarting Game", Toast.LENGTH_LONG).show();
+                WordActivity wordActivity = new WordActivity();
+                wordActivity.newGame();
+            }
+        }
+
+        @Override
+        public void onAccuracyChanged(Sensor sensor, int accuracy) {
+            //no records on change in accuracy
+        }
+    };
+
+    /* Lifecycle methods to register and unregister sensor event listeners */
+    @Override
+    protected void onResume() {
+        sensorManager.registerListener(sensorEventListener, sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER),
+                SensorManager.SENSOR_DELAY_NORMAL);
+        super.onResume();
+
+    }
+
+    @Override
+    protected void onPause() {
+        sensorManager.unregisterListener(sensorEventListener);
+        super.onPause();
     }
 
     //setter and getter methods for the current word array based on difficulty selected
@@ -182,13 +285,20 @@ public class WordActivity extends AppCompatActivity {
     @SuppressLint("SetTextI18n")
     public void checkWord(String currentWord, EditText wordGuess) {
         if (wordGuess.getText().toString().equalsIgnoreCase(currentWord)) {
+            soundPool.play(correctSound, 1, 1, 0, 0, 1);
             info.setText("Correct Guess!");
+            updateScore(check);
+            if (currentWordArray.length != 0) {
+                showNextWord();
+            }
+
+
             wordGuess.setText("");
             updateScore(true);
             score.setText(String.valueOf(currentScore += getCurrentScore()));
             showNextWord();
 
-            if (currentWord.equals(currentWordArray[9])) {
+            if (currentWordArray.length == 0) {
                 info.setText("All Words Have been solved");
                 timer.stop();
                 showWord.setEnabled(false);
@@ -199,17 +309,18 @@ public class WordActivity extends AppCompatActivity {
             //iterate through current word array
         } else {
             info.setText("Incorrect Guess, Try Again :)");
+            soundPool.play(incorrectSound, 1, 1, 0, 0, 1);
         }
     }
 
     @SuppressLint("SetTextI18n")
     public void showNextWord() {
-        timer.setBase(SystemClock.elapsedRealtime());
-        timer.start();
 
-        nextWord = getCurrentWordArray()[randNum.nextInt(getCurrentWordArray().length - 1)];
-        word.setText(shuffleWord(nextWord));
+        n += 1;
+        getCurrentWordArray();
+        currentWord = getCurrentWordArray()[n];
         info.setText("The New Word to Guess Is:");
+        word.setText(shuffleWord(currentWord));
     }
 
 
@@ -232,10 +343,12 @@ public class WordActivity extends AppCompatActivity {
         checkWord.setEnabled(true);
     }
 
-    public void openMainActivityIntent() {
-        newGame();
-        Intent mainActivityIntent = new Intent(WordActivity.this, MainActivity.class);
-        startActivity(mainActivityIntent);
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        soundPool.release();
+        soundPool = null;
     }
 
 }
