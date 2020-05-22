@@ -66,4 +66,12 @@
     <string name="mute_sounds">Mute Sounds</string>
     <string name="sound">Sound</string>
     <string name="unregister_sensors">Unregister Sensors</string>
+    <string name="instruction_word">You\'re new Word to be guessed is:</string>
+    <string name="correct">Correct!</string>
+    <string name="incorrect_word">Try Again :)</string>
+    <string name="start">Start</string>
+    <string name="congratulations">Congratulations, You have solved all the words on</string>
+    <string name="difficulty">Difficulty %s</string>
+    <string name="scored">And You Scored %d</string>
+
 </resources>

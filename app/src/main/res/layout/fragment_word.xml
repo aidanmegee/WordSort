@@ -42,19 +42,19 @@
         android:autofillHints="" />
 
     <Button
-        android:id="@+id/show_word"
+        android:id="@+id/start"
         android:layout_marginTop="20dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/word_guess"
         android:layout_centerHorizontal="true"
-        android:text="@string/show_word"/>
+        android:text="@string/start"/>
 
     <Button
         android:id="@+id/check_word"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/show_word"
+        android:layout_below="@id/start"
         android:layout_centerHorizontal="true"
         android:text="@string/check"/>
 
