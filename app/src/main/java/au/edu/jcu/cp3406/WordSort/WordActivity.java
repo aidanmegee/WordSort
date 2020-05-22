@@ -3,9 +3,9 @@ package au.edu.jcu.cp3406.WordSort;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
+import android.database.sqlite.SQLiteDatabase;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
@@ -34,8 +34,6 @@ import au.edu.jcu.cp3406.WordSort.fragments.GameFragment;
 import au.edu.jcu.cp3406.WordSort.fragments.StatusFragment;
 import au.edu.jcu.cp3406.WordSort.fragments.WordFragment;
 import au.edu.jcu.cp3406.WordSort.utilities.Difficulty;
-import twitter4j.Twitter;
-import twitter4j.TwitterException;
 
 public class WordActivity extends AppCompatActivity {
 
@@ -61,9 +59,10 @@ public class WordActivity extends AppCompatActivity {
     private float accel;
     private float accelCurrent;
     private float accelLast;
+    DatabaseHelper wordSortDB;
+    SQLiteDatabase db;
 
 
-    @SuppressLint({"ResourceType"})
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -123,6 +122,9 @@ public class WordActivity extends AppCompatActivity {
         //determines difficulty and assigns word array based on the difficulty
         chooseDifficulty(Difficulty.valueOf(currentDifficulty.toUpperCase()));
 
+        //initialise database
+        wordSortDB = new DatabaseHelper(this);
+
         //Find TextViews
         info = findViewById(R.id.info);
         word = findViewById(R.id.current_word);
@@ -146,6 +148,7 @@ public class WordActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 timer.start();
+                info.setText("");
                 showNextWord();
                 start.setEnabled(false);
             }
@@ -251,12 +254,13 @@ public class WordActivity extends AppCompatActivity {
     //update score method that sets the current score each time check word is clicked by the user
     public void updateScore(boolean check) {
         if (check) {
-            setCurrentScore(currentScore += getCurrentScore());
+            setCurrentScore(currentScore += currentScore);
         }
     }
 
     //method to display next word
     public void showNextWord() {
+        info.setText(R.string.decipher_the_word);
         currentWordArray = getCurrentWordArray();
         currentWord = currentWordArray[i];
         word.setText(shuffleWord(currentWord));
@@ -265,7 +269,8 @@ public class WordActivity extends AppCompatActivity {
         if (i == currentWordArray.length - 1) {
             timer.stop();
             info.setText(String.format("Congratulations, you scored %s on Difficulty: %s ", currentScore, currentDifficulty));
-//            new TwitterDemo().updateTweet(String.format(Locale.getDefault(),"Congratulations, you scored %s on Difficulty: %s ", currentScore, currentDifficulty));
+            wordSortDB.insertData(db, "WordSort", "King Of Word Sort", currentScore);
+            new TwitterDemo().updateTweet(String.format(Locale.getDefault(),"Congratulations, you scored %s on Difficulty: %s ", currentScore, currentDifficulty));
             word.setText("");
             score.setText("");
             checkWord.setEnabled(false);
@@ -273,16 +278,6 @@ public class WordActivity extends AppCompatActivity {
             newGame.setEnabled(true);
         }
     }
-
-//    public void showNextWord() {
-//        currentWordArray = getCurrentWordArray();
-//        for (int i = 0; i < currentWordArray.length; i++) {
-//            wordGuess.setText("");
-//            currentWord = currentWordArray[i];
-//            word.setText(shuffleWord(currentWord));
-//
-//            }
-//        }
 
 
     //method to determine if the word is correct
@@ -298,6 +293,7 @@ public class WordActivity extends AppCompatActivity {
         } else {
             soundPool.play(incorrectSound, 1, 1, 0, 0, 1);
             info.setText(R.string.incorrect_word);
+            setCurrentScore(currentScore - 5);
         }
     }
 
@@ -313,21 +309,18 @@ public class WordActivity extends AppCompatActivity {
     }
 
 
-    @SuppressLint("SetTextI18n")
     public void newGame() {
         timer.setBase(SystemClock.elapsedRealtime());
         timer.stop();
-        //get random word from selected array
-//        currentWord = getCurrentWordArray()[randNum.nextInt(getCurrentWordArray().length)];
-        info.setText("Guess the Word!");
+        info.setText(R.string.decipher_the_word);
         word.setText("");
-        score.setText("Score: 0");
+        score.setText(R.string.score);
 
         //clear edit text field
         wordGuess.setText("");
 
         //switch buttons from when show word is clicked to when new game is clicked
-        newGame.setEnabled(false);
+        newGame.setEnabled(true);
         start.setEnabled(true);
         checkWord.setEnabled(true);
     }

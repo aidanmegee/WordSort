@@ -57,7 +57,7 @@
     <string name="check">CHECK</string>
     <string name="new_game">New Game</string>
     <string name="play">Play</string>
-    <string name="score">Score:</string>
+    <string name="score">Score: 0</string>
     <string name="finished">Finished</string>
     <string name="current_difficulty">Current Difficulty:</string>
     <string name="message">Message:</string>
@@ -73,5 +73,7 @@
     <string name="congratulations">Congratulations, You have solved all the words on</string>
     <string name="difficulty">Difficulty %s</string>
     <string name="scored">And You Scored %d</string>
+    <string name="decipher_the_word">Decipher The Word</string>
+    <string name="press_start_to_begin">Press Start To Begin</string>
 
 </resources>

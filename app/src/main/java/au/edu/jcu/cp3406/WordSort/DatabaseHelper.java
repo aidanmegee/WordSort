@@ -28,7 +28,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             db.execSQL("CREATE TABLE WORDSORT (_id INTEGER PRIMARY KEY AUTOINCREMENT, "
                     + "NAME TEXT, "
                     + "SCORE INTEGER);");
-            insertData(db, "WORDSORT", "Champion", 200);
+            insertData(db, "WordSort", "Champion", 200);
         }
     }
 

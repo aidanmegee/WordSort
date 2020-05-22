@@ -29,7 +29,7 @@ public class HighScoresActivity extends AppCompatActivity {
         try {
             db = wordSortHelper.getReadableDatabase();
 
-            cursor = db.query("WORDSORT",
+            cursor = db.query("WordSort",
                     new String[]{"_id", "NAME", "SCORE"},
                     null, null, null, null, "SCORE DESC");
             SimpleCursorAdapter nameAdapter = new SimpleCursorAdapter(this,
