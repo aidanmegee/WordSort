@@ -40,9 +40,9 @@ public class WordActivity extends AppCompatActivity {
     private Chronometer timer;
     private Random randNum;
     private int n, currentScore;
-    private int easyScore = 5;
-    private int medScore = 10;
-    private int hardScore = 15;
+    private int easyScore = 1;
+    private int medScore = 3;
+    private int hardScore = 5;
     boolean check;
     String[] easyWords;
     String[] mediumWords;
@@ -52,7 +52,7 @@ public class WordActivity extends AppCompatActivity {
     private TextView info, word, score;
     private EditText wordGuess;
     private Button checkWord, newGame, showWord;
-    private String currentWord, nextWord;
+    private String currentWord;
     private SoundPool soundPool;
     private int correctSound, incorrectSound;
     StatusFragment statusFragment;
@@ -140,27 +140,29 @@ public class WordActivity extends AppCompatActivity {
         timer = findViewById(R.id.timer);
 
         //random object for index of currentWordArray
-        final int randNum = new Random().nextInt(currentWordArray.length);
+        randNum = new Random();
 
         showWord.setOnClickListener(new View.OnClickListener() {
             @SuppressLint("SetTextI18n")
             @Override
             public void onClick(View v) {
-                timer.setBase(SystemClock.elapsedRealtime());
                 timer.start();
-                //get random word from selected array
-                currentWord = getCurrentWordArray()[randNum];
-                word.setText(shuffleWord(getNextWord()));
-                info.setText("Guess the Word!");
-
-
-                //clear edit text field
                 wordGuess.setText("");
+                currentWord = getCurrentWordArray()[randNum.nextInt(getCurrentWordArray().length)];
+                for (int i = 0; i < getCurrentWordArray().length; i++) {
+                    word.setText(shuffleWord(currentWord));
+                }
 
-                //switch buttons from when show word is clicked to when new game is clicked
-                newGame.setEnabled(false);
-                checkWord.setEnabled(true);
 
+//
+//                    //displays the shuffled word
+//                    word.setText(shuffleWord(currentWord));
+//                    if (i == getCurrentWordArray().length) {
+//                        timer.stop();
+//                        info.setText("Congratulations, You have solved all the words on " + currentDifficulty + " Difficulty " +
+//                                "And you Scored " + getCurrentScore());
+//                    }
+//                }
             }
         });
 
@@ -168,8 +170,21 @@ public class WordActivity extends AppCompatActivity {
             @SuppressLint("SetTextI18n")
             @Override
             public void onClick(View v) {
-                checkWord(currentWord);
-                word.setText(shuffleWord(getNextWord()));
+                for (int i = 0; i < getCurrentWordArray().length; i++) {
+                    word.setText(shuffleWord(getCurrentWordArray()[i]));
+                    info.setText("You're new Word to be guessed is:");
+                }
+                    if (wordGuess.getText().toString().equalsIgnoreCase(currentWord)) {
+                        soundPool.play(correctSound, 1, 1, 0, 0, 1);
+                        info.setText("Correct!");
+                        newGame.setEnabled(true);
+                        updateScore(check);
+                        wordGuess.setText("");
+                } else {
+                    soundPool.play(incorrectSound, 1, 1, 0, 0, 1);
+                    info.setText("Try Again :)");
+                }
+
             }
         });
 
@@ -252,14 +267,6 @@ public class WordActivity extends AppCompatActivity {
         return this.currentWordArray;
     }
 
-    public void setNextWord(String currentWord) {
-        this.currentWord = currentWord;
-    }
-
-    public String getNextWord() {
-        return this.currentWord;
-    }
-
     public void setCurrentScore(int currentScore) {
         this.currentScore = currentScore;
     }
@@ -268,6 +275,7 @@ public class WordActivity extends AppCompatActivity {
         return this.currentScore;
     }
 
+    //update score method that sets the current score each time check word is clicked by the user
     public void updateScore(boolean check) {
         if (check) {
             setCurrentScore(currentScore += getCurrentScore());
@@ -278,55 +286,18 @@ public class WordActivity extends AppCompatActivity {
     public String shuffleWord(String currentWord) {
         List<String> letters = Arrays.asList(currentWord.split("")); //creates a list of String characters and splits them with an empty string
         Collections.shuffle(letters);
-        StringBuilder shuffled = new StringBuilder(" ");//New String variable to hold letters
+        String shuffled = " "; //New String variable to hold letters
         for (String letter : letters) {
-            shuffled.append(letter);  //appends letters to the new String variable shuffled
+            shuffled += letter;  //appends letters to the new String variable shuffled
         }
-        return shuffled.toString(); //returns the shuffled variable containing all letters of the word
-    }
-
-    @SuppressLint("SetTextI18n")
-    public void checkWord(String currentWord) {
-        if (wordGuess.getText().toString().equalsIgnoreCase(currentWord)) {
-            soundPool.play(correctSound, 1, 1, 0, 0, 1);
-            info.setText("Correct Guess!");
-            updateScore(check);
-            if (currentWordArray.length != 0) {
-                showNextWord();
-            }
-
-            wordGuess.setText("");
-            updateScore(true);
-            score.setText(String.valueOf(currentScore += getCurrentScore()));
-            showNextWord();
-
-            if (currentWordArray.length == 0) {
-                info.setText("All Words Have been solved");
-                timer.stop();
-                showWord.setEnabled(false);
-                checkWord.setEnabled(false);
-            }
-            newGame.setEnabled(true);
-            //iterate through current word array
-        } else {
-            info.setText("Incorrect Guess, Try Again :)");
-            soundPool.play(incorrectSound, 1, 1, 0, 0, 1);
-        }
-    }
-
-    @SuppressLint("SetTextI18n")
-    public void showNextWord() {
-
-        for (int i = 0; i < getCurrentWordArray().length; i++) {
-            setNextWord(currentWordArray[i]);
-        }
+        return shuffled; //returns the shuffled variable containing all letters of the word
     }
 
 
     @SuppressLint("SetTextI18n")
     public void newGame() {
         timer.setBase(SystemClock.elapsedRealtime());
-        timer.start();
+        timer.stop();
         //get random word from selected array
 //        currentWord = getCurrentWordArray()[randNum.nextInt(getCurrentWordArray().length)];
         info.setText("Guess the Word!");
