@@ -25,11 +25,10 @@ import android.widget.Toast;
 
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.HashSet;
 import java.util.List;
+import java.util.Locale;
 import java.util.Objects;
 import java.util.Random;
-import java.util.Set;
 
 import au.edu.jcu.cp3406.WordSort.fragments.GameFragment;
 import au.edu.jcu.cp3406.WordSort.fragments.StatusFragment;
@@ -54,6 +53,7 @@ public class WordActivity extends AppCompatActivity {
     private String currentWord;
     private SoundPool soundPool;
     private int correctSound, incorrectSound;
+    private int i = 0;
     StatusFragment statusFragment;
     WordFragment wordFragment;
     GameFragment gameFragment;
@@ -185,8 +185,7 @@ public class WordActivity extends AppCompatActivity {
             if (accel > 12) {
                 // new game method called for device movement (shaking)
                 Toast.makeText(getApplicationContext(), "Shaking Detected, Restarting Game", Toast.LENGTH_LONG).show();
-                WordActivity wordActivity = new WordActivity();
-                wordActivity.newGame();
+                newGame();
             }
         }
 
@@ -256,37 +255,35 @@ public class WordActivity extends AppCompatActivity {
         }
     }
 
-    //method to display next work
+    //method to display next word
     public void showNextWord() {
-        wordGuess.setText("");
         currentWordArray = getCurrentWordArray();
-        int randomNumber = generateRandomNumber();
-        currentWord = currentWordArray[randNum.nextInt((randomNumber))];
-        Set<Integer> randSet = new HashSet<>(); //hash set to hold distinct random numbers
-        Set<String> wordSet = new HashSet<>(Arrays.asList(currentWordArray));
-        for (int i = 0; i < currentWordArray.length; i++) {
-            word.setText(shuffleWord(currentWord));
-            int temp = generateRandomNumber();
-            String temp1 = currentWordArray[i];
-            randSet.add(temp);
-            wordSet.add(temp1);
-            if (i == currentWordArray.length) {
-                info.setText(String.format(R.string.congratulations + R.string.difficulty + R.string.scored + currentDifficulty, getCurrentScore()));
-                new TwitterDemo().updateTweet(info.getText().toString());
-                word.setText("");
-                checkWord.setEnabled(false);
-                start.setEnabled(false);
-                newGame.setEnabled(true);
-            }
+        currentWord = currentWordArray[i];
+        word.setText(shuffleWord(currentWord));
+        i++;
+        //If statement to determine if the user has sorted all words
+        if (i == currentWordArray.length - 1) {
+            timer.stop();
+            info.setText(String.format("Congratulations, you scored %s on Difficulty: %s ", currentScore, currentDifficulty));
+//            new TwitterDemo().updateTweet(String.format(Locale.getDefault(),"Congratulations, you scored %s on Difficulty: %s ", currentScore, currentDifficulty));
+            word.setText("");
+            score.setText("");
+            checkWord.setEnabled(false);
+            start.setEnabled(false);
+            newGame.setEnabled(true);
         }
-
     }
 
-    //random number generator method used for hash set of integer types
-    public int generateRandomNumber() {
-        Random random = new Random();
-        return random.nextInt(getCurrentWordArray().length);
-    }
+//    public void showNextWord() {
+//        currentWordArray = getCurrentWordArray();
+//        for (int i = 0; i < currentWordArray.length; i++) {
+//            wordGuess.setText("");
+//            currentWord = currentWordArray[i];
+//            word.setText(shuffleWord(currentWord));
+//
+//            }
+//        }
+
 
     //method to determine if the word is correct
     public void checkWord() {
@@ -296,7 +293,7 @@ public class WordActivity extends AppCompatActivity {
             showNextWord();
             newGame.setEnabled(true);
             updateScore(true);
-            score.setText(String.valueOf(getCurrentScore()));
+            score.setText(String.valueOf(currentScore));
             wordGuess.setText("");
         } else {
             soundPool.play(incorrectSound, 1, 1, 0, 0, 1);
@@ -324,6 +321,7 @@ public class WordActivity extends AppCompatActivity {
 //        currentWord = getCurrentWordArray()[randNum.nextInt(getCurrentWordArray().length)];
         info.setText("Guess the Word!");
         word.setText("");
+        score.setText("Score: 0");
 
         //clear edit text field
         wordGuess.setText("");
